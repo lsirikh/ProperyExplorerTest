@@ -1,0 +1,112 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:PropertyExplorerTest.ViewModels"
+                    xmlns:views="clr-namespace:PropertyExplorerTest.Views"
+                    xmlns:converters="clr-namespace:PropertyExplorerTest.Converters"
+                    xmlns:shapes="clr-namespace:PropertyExplorerTest.ViewModels.Shapes"
+                    xmlns:propertyModels="clr-namespace:PropertyExplorerTest.Models.PropertyModels"
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <converters:ColorToSolidBrushConverter x:Key="BrushConverter" />
+
+    <DataTemplate DataType="{x:Type shapes:RectViewModel}">
+        <Grid Margin="10,2" HorizontalAlignment="Center">
+            <RadioButton Command="{Binding Path=DataContext.SelectModelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+					CommandParameter="{Binding}" GroupName="ModelSelector" Style="{StaticResource SelectorStyle}">
+
+                <StackPanel>
+                    <Rectangle Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                               Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                               Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                               Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                               StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               RadiusX="{Binding Path=RadiusX.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               RadiusY="{Binding Path=RadiusY.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{Binding Path=X.Value, StringFormat={}X:{0:0.##}}" Foreground="Yellow" FontSize="15" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=Y.Value, StringFormat={}Y:{0:0.##}}" Foreground="Yellow" FontSize="15" FontWeight="Bold" />
+                </StackPanel>
+                
+            </RadioButton>
+            
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type shapes:EllipseViewModel}">
+        <Grid Margin="10,2" HorizontalAlignment="Center">
+            <RadioButton Command="{Binding Path=DataContext.SelectModelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+					CommandParameter="{Binding}" GroupName="ModelSelector" Style="{StaticResource SelectorStyle}">
+                <Ellipse Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+								   Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+								   Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+								   Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+								   StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								   ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </RadioButton>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type shapes:LineViewModel}">
+        <Grid Margin="10,2" HorizontalAlignment="Center">
+            <RadioButton Command="{Binding Path=DataContext.SelectModelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+					CommandParameter="{Binding}" GroupName="ModelSelector" Style="{StaticResource SelectorStyle}">
+                <Line Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+							  Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+							  Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+							  Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+							  StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							  ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							  X1="{Binding Path=X1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							  X2="{Binding Path=X2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							  Y1="{Binding Path=Y1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							  Y2="{Binding Path=Y2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </RadioButton>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PropertyExplorerViewModel}">
+        <views:PropertyExplorer />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type propertyModels:PropertyCategory}">
+        <Grid>
+            <Expander Header="{Binding CategoryName}" 
+                      Visibility="{Binding IsShow, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                      IsExpanded="True">
+                <ItemsControl ItemsSource="{Binding Properties}"/>
+            </Expander>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type propertyModels:PropertyContainer}">
+        <Grid Visibility="{Binding IsShow, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Binding PropertyName}"/>
+            <Grid Grid.Column="1">
+                <ContentControl Content="{Binding Property}"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type	propertyModels:DoublePropertySet}">
+        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type	propertyModels:StringPropertySet}">
+        <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}"/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type	propertyModels:ColorPropertySet}">
+        <xctk:ColorPicker SelectedColor="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+
+</ResourceDictionary>

@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="PropertyExplorerTest.Views.MainContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewModels="clr-namespace:PropertyExplorerTest.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1024">
+    
+    <!--UserControl DataContext 설정 -->
+    <UserControl.DataContext>
+        <!-- 내부에서 viewModels를 직접 참조하는 것은 MVVM 패턴에 적합하지 
+        않다고 한다. -->
+        <viewModels:MainContainerViewModel/>
+    </UserControl.DataContext>
+    
+    <!-- UserControl Layout 구성 -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Viewbox Stretch="UniformToFill" VerticalAlignment="Center">
+                <Border BorderThickness="0" BorderBrush="Transparent"
+                        CornerRadius="0" Margin="10" Width="1024" Height="768">
+                    <ItemsControl x:Name="canvasControl" ItemsSource="{Binding Items}"
+                                  Margin="5">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas x:Name="DesignerCanvas" ClipToBounds="True"
+                                        SnapsToDevicePixels="True" Margin="5" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style TargetType="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </Border>
+            </Viewbox>
+            <!--<ItemsControl ItemsSource="{Binding Items}"/>-->
+        </Grid>
+        
+        <GridSplitter Grid.Column="0" ShowsPreview="True" Width="5" Background="#FF9C9C9C"/>
+
+        <Grid Grid.Column="1">
+            <ContentControl Content="{Binding PropertyExplorer}"/>
+        </Grid>
+    </Grid>
+</UserControl>

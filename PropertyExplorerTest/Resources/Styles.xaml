@@ -1,0 +1,117 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- 컬러 키 딕셔너리 정리-->
+    <Color x:Key="ControlLightColor">White</Color>
+    <Color x:Key="ControlMediumColor">#FF7381F9</Color>
+
+    <Color x:Key="ControlMouseOverColor">#FF3843C4</Color>
+    <Color x:Key="ControlPressedColor">#FF211AA9</Color>
+
+    <Color x:Key="SelectionColorStart">#FFFF8A00</Color>
+    <Color x:Key="SelectionColorEnd">#FFE7B24B</Color>
+
+    <Color x:Key="GlyphColor">#FF444444</Color>
+
+    <!--Border colors-->
+    <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
+    <Color x:Key="BorderDarkColor">#FF444444</Color>
+
+    <!-- 순수하게 스타일적인 요소만 바인딩 되어있고, 데이터 관련 바인딩은 모두 배제되어있다. -->
+    <Style x:Key="SelectorStyle" TargetType="{x:Type RadioButton}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid x:Name="Border">
+                        <!-- RadioButton의 백그라운드 커스텀 설정 정보-->
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0"
+                                       EndPoint="0,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStopCollection>
+                                        <GradientStop Color="{DynamicResource ControlLightColor}" />
+                                        <GradientStop Color="{DynamicResource ControlMediumColor}"
+                                      Offset="1.0" />
+                                    </GradientStopCollection>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        
+                        <!-- 시각효과 커스텀 정리-->
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <!-- Normal 상태 애니메이션 효과 -->
+                                <VisualState x:Name="Normal" />
+
+                                <!-- MouseOver 상태 애니메이션 효과 -->
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                     Storyboard.TargetProperty="(Grid.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlMouseOverColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+
+                                <!-- Pressed 상태 애니메이션 효과 -->
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                     Storyboard.TargetProperty="(Grid.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlPressedColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+
+                                <!-- Disabled 상태 애니메이션 효과 -->
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                     Storyboard.TargetProperty="(Grid.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)">
+                                            <EasingColorKeyFrame KeyTime="0" Value="{StaticResource ControlLightColor}" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        
+                        
+                        <ContentPresenter Margin="4,0,0,0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            RecognizesAccessKey="True" />
+                    </Grid>
+                    
+                    <!-- 트리거 설정 -->
+                    <ControlTemplate.Triggers>
+                        
+                        <!-- RadioButton 선택이 되었을 때, 동작방법 구현 -->
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStopCollection>
+                                                <GradientStop Color="{DynamicResource SelectionColorStart}" />
+                                                <GradientStop Color="{DynamicResource SelectionColorEnd}" Offset="1.0" />
+                                            </GradientStopCollection>
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        
+                    </ControlTemplate.Triggers>
+                    
+                    
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+</ResourceDictionary>
