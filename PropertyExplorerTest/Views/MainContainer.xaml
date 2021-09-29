@@ -21,6 +21,7 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
+        <!-- 미니멀 개발자님 코드 활용 -->
         <Grid Grid.Column="0">
             <Viewbox Stretch="UniformToFill" VerticalAlignment="Center">
                 <Border BorderThickness="0" BorderBrush="Transparent"
@@ -34,7 +35,7 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemContainerStyle>
-                            <Style TargetType="{Binding ElementName=DesignerCanvas, Path=ContentPresenter}">
+                            <Style TargetType="{x:Type Canvas}">
                                 <Setter Property="Canvas.Left" Value="{Binding X}"/>
                                 <Setter Property="Canvas.Top" Value="{Binding Y}"/>
                             </Style>
