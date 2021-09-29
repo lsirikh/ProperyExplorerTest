@@ -16,7 +16,7 @@ namespace PropertyExplorerTest.Defines.Interfaces
     /// <summary>
     /// IPropertySet 인터페이스 파생
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Generic하게 다양한 타입을 받을 수 있게 되었다.</typeparam>
     public interface IPropertySet<T> : IPropertySet
     {
         

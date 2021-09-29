@@ -9,7 +9,7 @@ namespace PropertyExplorerTest.Defines.Interfaces
     public interface IPropertyContainer
     {
         /// <summary>
-        /// PropertyContainer의 명칭 Color, Size 등등...
+        /// Property의 명칭 X, Width 등등...
         /// </summary>
         string PropertyName { get; }
 
@@ -29,6 +29,9 @@ namespace PropertyExplorerTest.Defines.Interfaces
         /// </summary>
         IPropertySet Property { get; }
 
+        /// <summary>
+        /// 속성의 속한 Category
+        /// </summary>
         IPropertyCategory ParentCategory { get; }
     }
 }

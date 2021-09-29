@@ -29,12 +29,12 @@
                                   Margin="5">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Canvas x:Name="DesignerCanvas" ClipToBounds="True"
+                                <Canvas x:Name="DesignerCanvas" ClipToBounds="True" Background="Beige"
                                         SnapsToDevicePixels="True" Margin="5" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemContainerStyle>
-                            <Style TargetType="ContentPresenter">
+                            <Style TargetType="{Binding ElementName=DesignerCanvas, Path=ContentPresenter}">
                                 <Setter Property="Canvas.Left" Value="{Binding X}"/>
                                 <Setter Property="Canvas.Top" Value="{Binding Y}"/>
                             </Style>

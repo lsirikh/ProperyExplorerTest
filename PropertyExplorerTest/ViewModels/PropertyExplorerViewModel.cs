@@ -67,6 +67,10 @@ namespace PropertyExplorerTest.ViewModels
 
             foreach (var category in properties.GetCategories())
             {
+                //GetCategories에서 카테고리 리스트를 가져오고
+                //category는 단일 PropertyCategory를 가져옴
+                //그리고 ObservableCollection<IPropertyCategory>타입에
+                //담아준다.
                 this.Categories.Add(category);
             }
         }

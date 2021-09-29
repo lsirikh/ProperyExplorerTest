@@ -40,14 +40,23 @@ namespace PropertyExplorerTest.ViewModels.Shapes
         public IPropertySet ToolTip { get; }
 
         /// <summary>
-        /// _categories 역시 
+        /// _categories 
         /// </summary>
         protected List<IPropertyCategory> _categories = new List<IPropertyCategory>();
 
+        /// <summary>
+        /// BaseShapeViewModel의 생성자 오버라이딩으로
+        /// model을 인자로 받게 된다.
+        /// 구조적으로 Parent의 역할을 하게되고
+        /// 자식 ViewModel이 해당 메소드나 생성자를 가져다
+        /// 사용할 수 있도록 구현함.
+        /// </summary>
+        /// <param name="model"></param>
         protected BaseShapeViewModel(BaseModel model)
         {
             this._model = model;
 
+            //왜 이렇게 처리하는지 이해가 안됨.
             this.Width = new DoublePropertySet(nameof(this.Width), ()=> model.Width, w => model.Width = w) ;
             this.Height = new DoublePropertySet(nameof(this.Height), () => model.Height, h => model.Height = h);
             this.X = new DoublePropertySet(nameof(this.X), () => model.X, x => model.X = x);
@@ -62,6 +71,7 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
         /// <summary>
         /// Category 구성을 등록하고 초기화 하는 메소드
+        /// 주로 BaseModel을 근간으로 하는 속성과 카테고리임
         /// </summary>
         private void InitBaseCategories()
         {
@@ -88,6 +98,12 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
         }
 
+        /// <summary>
+        /// IEnumerable의 용법도 아직 잘 이해가 안됨..ㅠㅠ
+        /// Collection Type으로 넘겨줄수 있다 정도???
+        /// 그래서 이걸 List<IPropertyCategory>가 받을 수 있다??
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<IPropertyCategory> GetCategories()
         {
             return this._categories.ToList();

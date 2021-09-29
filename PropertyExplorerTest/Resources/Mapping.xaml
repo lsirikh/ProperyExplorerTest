@@ -16,8 +16,9 @@
 
     <DataTemplate DataType="{x:Type shapes:RectViewModel}">
         <Grid Margin="10,2" HorizontalAlignment="Center">
-            <RadioButton Command="{Binding Path=DataContext.SelectModelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
-					CommandParameter="{Binding}" GroupName="ModelSelector" Style="{StaticResource SelectorStyle}">
+            <RadioButton Command="{Binding Path=DataContext.SelectModelCommand, 
+                        RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                         CommandParameter="{Binding}" GroupName="ModelSelector" Style="{StaticResource SelectorStyle}">
 
                 <StackPanel>
                     <Rectangle Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -28,8 +29,8 @@
                                ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                RadiusX="{Binding Path=RadiusX.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                RadiusY="{Binding Path=RadiusY.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock Text="{Binding Path=X.Value, StringFormat={}X:{0:0.##}}" Foreground="Yellow" FontSize="15" FontWeight="Bold" />
-                    <TextBlock Text="{Binding Path=Y.Value, StringFormat={}Y:{0:0.##}}" Foreground="Yellow" FontSize="15" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=X.Value, StringFormat={}X:{0:0.##}}" Foreground="Yellow" FontSize="10" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=Y.Value, StringFormat={}Y:{0:0.##}}" Foreground="Yellow" FontSize="10" FontWeight="Bold" />
                 </StackPanel>
                 
             </RadioButton>
@@ -39,6 +40,15 @@
 
     <DataTemplate DataType="{x:Type shapes:EllipseViewModel}">
         <Grid Margin="10,2" HorizontalAlignment="Center">
+            <!-- 
+            RadioButton Command를 통한 모델 선택 기능 수행
+            RelativeSource로 UserControl 타입의 상위 Element를 찾는다.
+            Parameter는 Model이 바인딩 될텐데 어떻게 바인딩 되는거지?
+            
+            https://stackoverflow.com/questions/84278/how-do-i-use-wpf-bindings-with-relativesource 
+            그림 참조(https://i.stack.imgur.com/6Tcc6.jpg)
+            
+            -->
             <RadioButton Command="{Binding Path=DataContext.SelectModelCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
 					CommandParameter="{Binding}" GroupName="ModelSelector" Style="{StaticResource SelectorStyle}">
                 <Ellipse Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

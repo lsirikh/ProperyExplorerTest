@@ -51,9 +51,10 @@ namespace PropertyExplorerTest.Models
         /// </summary>
         public string ToolTip { get; set; }
 
+        #region 생성자 및 생성자 오버라이드
+
         public BaseModel()
         {
-
         }
         /// <summary>
         /// 생성자 오버라이드 param 2개
@@ -80,6 +81,6 @@ namespace PropertyExplorerTest.Models
             this.X = x;
             this.Y = y;
         }
-
+        #endregion
     }
 }
