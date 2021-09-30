@@ -8,7 +8,32 @@ using System.Windows.Media;
 namespace PropertyExplorerTest.Models
 {
     public class BaseModel
-    {   
+    {
+        /// <summary>
+        /// 아이디
+        /// </summary>
+        public int Id { get; set; } = 0;
+
+        /// <summary>
+        /// 명칭
+        /// </summary>
+        public string Name { get; set; } = "Untitled";
+
+        /// <summary>
+        /// 맵아이디
+        /// </summary>
+        public int MapId { get; set; } = 1;
+
+        /// <summary>
+        /// 소속 그룹
+        /// </summary>
+        public int Group { get; set; } = 1;
+
+        /// <summary>
+        /// 레이어 높이
+        /// </summary>
+        public int ZLevel { get; set; } = 1;
+
         /// <summary>
         /// 넓이 Width
         /// </summary>
@@ -56,6 +81,7 @@ namespace PropertyExplorerTest.Models
         public BaseModel()
         {
         }
+
         /// <summary>
         /// 생성자 오버라이드 param 2개
         /// </summary>
@@ -66,6 +92,7 @@ namespace PropertyExplorerTest.Models
             this.X = x;
             this.Y = y;
         }
+
         /// <summary>
         /// 생성자 오버라이드 param 4개
         /// </summary>
