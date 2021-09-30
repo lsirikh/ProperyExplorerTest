@@ -68,7 +68,7 @@ namespace PropertyExplorerTest.Models.PropertyModels
             this._setter = setter ?? this.SetDefaultSetter;
         }
         #endregion
-
+                
         #region Methods
         /// <summary>
         /// 

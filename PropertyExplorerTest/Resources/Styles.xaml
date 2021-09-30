@@ -19,13 +19,13 @@
     <Color x:Key="BorderDarkColor">#FF444444</Color>
 
     <!-- 순수하게 스타일적인 요소만 바인딩 되어있고, 데이터 관련 바인딩은 모두 배제되어있다. -->
-    <Style x:Key="SelectorStyle" TargetType="{x:Type RadioButton}">
+    <Style x:Key="SelectorStyle" TargetType="{x:Type CheckBox}">
         <Setter Property="SnapsToDevicePixels" Value="true" />
         <Setter Property="OverridesDefaultStyle" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{DynamicResource RadioButtonFocusVisual}" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource CheckBoxFocusVisual}" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type RadioButton}">
+                <ControlTemplate TargetType="{x:Type CheckBox}">
 
                     <Border x:Name="Border" CornerRadius="5" >
                         <!-- RadioButton의 백그라운드 커스텀 설정 정보-->

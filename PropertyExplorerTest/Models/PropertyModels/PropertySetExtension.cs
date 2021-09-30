@@ -32,6 +32,7 @@ namespace PropertyExplorerTest.Models.PropertyModels
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return default(T);
             }
         }

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:PropertyExplorerTest.ViewModels"
-             xmlns:behavior="clr-namespace:PropertyExplorerTest.ViewModels.Behaviors"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="1024">
@@ -26,14 +25,10 @@
         <!-- 미니멀 개발자님 코드 활용 -->
         <Grid Grid.Column="0">
             <Viewbox Stretch="UniformToFill" 
-                     Width="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Width}"
-                     Height="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Height}">
+                     Width="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=Width}"
+                     Height="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=Height}">
                 <Border BorderThickness="0" BorderBrush="Transparent" Background="#FF172131" 
                     CornerRadius="10" Margin="10" Width="1024" Height="768">
-
-                    
-                    
-
                     <ItemsControl x:Name="canvasControl" ItemsSource="{Binding Items}"
                                     Margin="5">
                         <ItemsControl.ItemsPanel>
