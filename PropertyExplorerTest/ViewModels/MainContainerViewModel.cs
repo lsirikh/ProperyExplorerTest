@@ -42,6 +42,16 @@ namespace PropertyExplorerTest.ViewModels
         public PropertyExplorerViewModel PropertyExplorer { get; set; } = new PropertyExplorerViewModel();
 
         /// <summary>
+        /// 테스트
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnMouseLeftClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        /// <summary>
         /// 생성자를 통한 초기화
         /// 사각형, 타원(원), 선을 초기에 등록한다.
         /// </summary>
@@ -51,11 +61,11 @@ namespace PropertyExplorerTest.ViewModels
             var min = 1;
             var max = 600;
             var rectModel = new RectModel((double)rand.Next(min, max), (double)rand.Next(min, max));
-            /*var ellipseModel = new EllipseModel();
-            var lineModel = new LineModel((double)rand.Next(min, max), (double)rand.Next(min, max));*/
+            var ellipseModel = new EllipseModel();
+            var lineModel = new LineModel((double)rand.Next(min, max), (double)rand.Next(min, max));
             this.Items.Add(new RectViewModel(rectModel));
-            //this.Items.Add(new EllipseViewModel(ellipseModel));
-            //this.Items.Add(new LineViewModel(lineModel));
+            this.Items.Add(new EllipseViewModel(ellipseModel));
+            this.Items.Add(new LineViewModel(lineModel));
         }
 
         /// <summary>

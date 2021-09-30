@@ -23,6 +23,15 @@ namespace PropertyExplorerTest.ViewModels.Shapes
         /// Generic 타입을 활용하여 클래스간 Loosely-Coupled
         /// 구조를 가져가기 위한 조치로 보임
         /// </summary>
+        /// 
+        public IPropertySet Id { get; }
+
+        public IPropertySet Name { get; }
+
+        public IPropertySet Group { get; }
+
+        public IPropertySet ZLevel { get; }
+
         public IPropertySet Width { get; }
 
         public IPropertySet Height { get; }
@@ -57,6 +66,14 @@ namespace PropertyExplorerTest.ViewModels.Shapes
             this._model = model;
 
             //왜 이렇게 처리하는지 이해가 안됨.
+            this.Id = new IntPropertySet(nameof(this.Id), () => model.Id, i => model.Id = i);
+
+            this.Name = new StringPropertySet(nameof(this.Name), () => model.Name, n => model.Name = n);
+
+            this.Group = new IntPropertySet(nameof(this.Group), () => model.Group, g => model.Group = g);
+
+            this.ZLevel = new IntPropertySet(nameof(this.ZLevel), () => model.ZLevel, l => model.ZLevel = l);
+
             this.Width = new DoublePropertySet(nameof(this.Width), ()=> model.Width, w => model.Width = w) ;
             this.Height = new DoublePropertySet(nameof(this.Height), () => model.Height, h => model.Height = h);
             this.X = new DoublePropertySet(nameof(this.X), () => model.X, x => model.X = x);
@@ -75,7 +92,13 @@ namespace PropertyExplorerTest.ViewModels.Shapes
         /// </summary>
         private void InitBaseCategories()
         {
-            
+
+            var data = new PropertyCategory("Data");
+            data.Properties.Add(new PropertyContainer(this.Id, data));
+            data.Properties.Add(new PropertyContainer(this.Name, data));
+            data.Properties.Add(new PropertyContainer(this.Group, data));
+            this._categories.Add(data);
+
             var size = new PropertyCategory("Size");
             size.Properties.Add(new PropertyContainer(this.Width, size));
             size.Properties.Add(new PropertyContainer(this.Height, size));
@@ -84,6 +107,7 @@ namespace PropertyExplorerTest.ViewModels.Shapes
             var location = new PropertyCategory("Location");
             location.Properties.Add(new PropertyContainer(this.X, location));
             location.Properties.Add(new PropertyContainer(this.Y, location));
+            size.Properties.Add(new PropertyContainer(this.ZLevel, size));
             this._categories.Add(location);
 
             var color = new PropertyCategory("Color");
