@@ -1,29 +1,21 @@
-﻿using PropertyExplorerTest.Defines.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace PropertyExplorerTest.Controls
 {
+    // 사용 안 함.
     public class MoveThumb : Thumb
     {
-        public MoveThumb()
+        static MoveThumb()
         {
-            DragDelta += new DragDeltaEventHandler(this.MoveThumb_DragDelta);
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(MoveThumb), new FrameworkPropertyMetadata(typeof(MoveThumb)));
         }
 
-        private void MoveThumb_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            if (sender is Thumb)
-            {
-                Thumb thumb = (Thumb)sender;
-                //IPropertySet myRectangle = (IPropertySet)thumb.DataContext;
-                //myRectangle.X += e.HorizontalChange;
-                //myRectangle.Y += e.VerticalChange;
-            }
-        }
+        //protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        //{
+        //    base.OnMouseLeftButtonDown(e);
+        //    e.Handled = false;
+        //}
     }
 }

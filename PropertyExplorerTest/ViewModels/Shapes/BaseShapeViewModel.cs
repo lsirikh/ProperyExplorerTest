@@ -36,9 +36,9 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
         public IPropertySet Height { get; }
 
-        public IPropertySet X { get; }
+        public IPropertySet X { get; set; }
 
-        public IPropertySet Y { get; }
+        public IPropertySet Y { get; set; }
 
         public IPropertySet FillColor { get; }
 

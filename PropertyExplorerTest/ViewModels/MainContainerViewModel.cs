@@ -3,6 +3,7 @@ using PropertyExplorerTest.Defines.Interfaces;
 using PropertyExplorerTest.Models;
 using PropertyExplorerTest.ViewModels.Shapes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,12 +23,24 @@ namespace PropertyExplorerTest.ViewModels
         /// 인터페이스 타입을 받는다.
         /// </summary>
         private RelayCommand<IPropertyOperative> _selectModelCommand;
+        
+        private BaseShapeViewModel _selectedShape;        
 
         /// <summary>
         /// ItemControl의 ItemSource로 활용되는 ObservableCollection 변수이다.
         /// BaseShapeViewModel의 Get할때, 새로운 인스턴스로 넘긴다.
         /// </summary>
         public ObservableCollection<BaseShapeViewModel> Items { get; } = new ObservableCollection<BaseShapeViewModel>();
+
+        public BaseShapeViewModel SelectedShape
+        {
+            get => _selectedShape;
+            set
+            {
+                this.SetProperty(ref this._selectedShape, value);
+                this.SelectModel(this._selectedShape);
+            }
+        }     
 
         /// <summary>
         /// 바인딩된 Command를 통해 SelectModelCommand가 수행되면 아래
@@ -48,7 +61,7 @@ namespace PropertyExplorerTest.ViewModels
         /// <param name="e"></param>
         public void OnMouseLeftClick(object sender, MouseButtonEventArgs e)
         {
-
+            // 사용 안 함
         }
 
         /// <summary>
@@ -77,8 +90,5 @@ namespace PropertyExplorerTest.ViewModels
         {
             this.PropertyExplorer.SelectModel(model);
         }
-
-
-
     }
 }

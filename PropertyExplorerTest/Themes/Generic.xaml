@@ -1,0 +1,77 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:control="clr-namespace:PropertyExplorerTest.Controls"
+    >
+
+
+    <Style TargetType="{x:Type control:DisplayPresenter}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type control:DisplayPresenter}">
+                    <Border>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition />
+                                <RowDefinition Height="30" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0">
+                                <Label
+                                    Content="{Binding Path=Label, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Foreground="White"
+                                    FontSize="15"
+                                    FontWeight="Bold"
+                                    />
+                            </Grid>
+
+                            <!-- content & panning -->
+                            <Grid Grid.Row="1">
+
+                                <ContentControl Content="{Binding Content, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}}">
+
+                                </ContentControl>
+                                <!--<control:MoveThumb
+                                    x:Name="PART_PanningThumb"
+                                    Background="Transparent"
+                                    >
+                                    <Thumb.Style>
+                                        <Style TargetType="{x:Type Thumb}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                                        <Border Background="Transparent" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Thumb.Style>
+                                </control:MoveThumb>-->
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="{Binding Path=X, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}, StringFormat={}X:{0:0.##}}"
+                                        Foreground="Yellow"
+                                        FontSize="10"
+                                        FontWeight="Bold"
+                                        />
+                                    <TextBlock
+                                        Text="{Binding Path=Y, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}, StringFormat={}Y:{0:0.##}}"
+                                        Foreground="Yellow"
+                                        FontSize="10"
+                                        FontWeight="Bold"
+                                        />
+                                </StackPanel>
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

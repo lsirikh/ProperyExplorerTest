@@ -65,6 +65,11 @@ namespace PropertyExplorerTest.ViewModels
 
             this.Categories.Clear();
 
+            if (properties == null)
+            {
+                return;
+            }
+
             foreach (var category in properties.GetCategories())
             {
                 //GetCategories에서 카테고리 리스트를 가져오고
@@ -74,7 +79,5 @@ namespace PropertyExplorerTest.ViewModels
                 this.Categories.Add(category);
             }
         }
-
-
     }
 }

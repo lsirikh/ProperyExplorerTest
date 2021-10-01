@@ -23,6 +23,7 @@ namespace PropertyExplorerTest.Models.PropertyModels
 			: base(name, getter, setter)
 		{
 		}
+		
 	}
 
 	public class IntPropertySet : PropertySet<int>
