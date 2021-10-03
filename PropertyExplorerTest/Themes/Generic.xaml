@@ -12,6 +12,13 @@
                 <ControlTemplate TargetType="{x:Type control:DisplayPresenter}">
                     <Border>
                         <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualState x:Name="Unselected"/>
+                                    
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
                                 <RowDefinition />

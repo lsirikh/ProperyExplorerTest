@@ -20,6 +20,7 @@
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:ColorToSolidBrushConverter x:Key="BrushConverter" />
 
+    <!--Content에 해당하는 영역 in Generic-->
     <DataTemplate DataType="{x:Type shapes:RectViewModel}">
         <control:DisplayPresenter
             X="{Binding X.Value}"

@@ -107,7 +107,7 @@ namespace PropertyExplorerTest.ViewModels.Shapes
             var location = new PropertyCategory("Location");
             location.Properties.Add(new PropertyContainer(this.X, location));
             location.Properties.Add(new PropertyContainer(this.Y, location));
-            size.Properties.Add(new PropertyContainer(this.ZLevel, size));
+            size.Properties.Add(new PropertyContainer(this.ZLevel, location));
             this._categories.Add(location);
 
             var color = new PropertyCategory("Color");

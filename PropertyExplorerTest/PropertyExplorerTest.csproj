@@ -56,7 +56,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\InCanvasMovingBehavior.cs" />
+    <Compile Include="Controls\InCanvasMovingBehavior.cs" />
     <Compile Include="Controls\DisplayPresenter.cs" />
     <Compile Include="Controls\MoveThumb.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
@@ -170,6 +170,9 @@
     <PackageReference Include="System.Windows.Interactivity.WPF">
       <Version>2.0.20525</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -38,21 +38,26 @@
                 Width="1024"
                 Height="768"
                 >
-                <ListBox
+                <ListBox x:Name ="CanvasListBox"
                     Background="Transparent"
                     ItemsSource="{Binding Items}"
                     SelectionMode="Extended"
                     SelectedItem="{Binding SelectedShape}"
                     Margin="5"
+                    PreviewMouseLeftButtonDown="CanvasListBox_PreviewMouseLeftButtonDown"
                     >
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
+
                             <Canvas
                                 ClipToBounds="True"
                                 SnapsToDevicePixels="True"
-                                Margin="5"
-                                />
+                                Margin="5" 
+                                >
+                                
+                            </Canvas>
                         </ItemsPanelTemplate>
+                        
                     </ListBox.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
@@ -62,6 +67,7 @@
                             <Setter Property="behaviors:InCanvasMovingBehavior.PanningTarget" Value="{Binding RelativeSource={RelativeSource Self}}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.X" Value="{Binding X.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.Y" Value="{Binding Y.Value}" />
+                            <Setter Property="behaviors:InCanvasMovingBehavior.ZLevel" Value="{Binding ZLevel.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.Captured" Value="{Binding IsSelected, RelativeSource={RelativeSource Self}}" />
                         </Style>
                     </ItemsControl.ItemContainerStyle>
