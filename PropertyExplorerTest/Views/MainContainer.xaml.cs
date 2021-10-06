@@ -25,17 +25,6 @@ namespace PropertyExplorerTest.Views
             InitializeComponent();
         }
 
-        /// <summary>
-        /// MVVM 패턴으로 구현하려면 어떻게 접근해야될까요?
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CanvasListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (!(e.OriginalSource is ScrollViewer viewer))
-                return;
-
-            CanvasListBox.UnselectAll();
-        }
+        
     }
 }

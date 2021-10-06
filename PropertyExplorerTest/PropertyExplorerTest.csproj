@@ -75,6 +75,7 @@
     <Compile Include="Models\PropertyModels\PropertySetExtension.cs" />
     <Compile Include="Models\PropertyModels\PropertySets.cs" />
     <Compile Include="Models\RectModel.cs" />
+    <Compile Include="ViewModels\Commands\SelectItemCommand.cs" />
     <Compile Include="ViewModels\Shapes\BaseShapeViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Shapes\EllipseViewModel.cs" />

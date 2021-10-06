@@ -268,6 +268,8 @@ namespace PropertyExplorerTest.Behaviors
 
             private bool _isZTop = false;
 
+            private bool _isOnCavasClicked = false;
+
             private int _savedZLevel;
 
             private const int MAX_LEVEL = 255;
@@ -292,12 +294,44 @@ namespace PropertyExplorerTest.Behaviors
                     return;
                 }
 
+
+                EventManager.RegisterClassHandler(typeof(ListBox), ListBox.MouseLeftButtonDownEvent, new RoutedEventHandler(CanvasMouseButtonDown));
+
+                EventManager.RegisterClassHandler(typeof(ListBox), ListBox.MouseLeftButtonUpEvent, new RoutedEventHandler(CanvasMouseButtonUp));
+
+                EventManager.RegisterClassHandler(typeof(ListBox), ListBox.MouseRightButtonDownEvent, new RoutedEventHandler(CanvasMouseButtonDown));
+
+                EventManager.RegisterClassHandler(typeof(ListBox), ListBox.MouseRightButtonUpEvent, new RoutedEventHandler(CanvasMouseButtonUp));
+
+
+
+
                 EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.MouseLeftButtonDownEvent, new RoutedEventHandler(this.OnMouseLeftButtonDown));
+
+                EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.MouseRightButtonDownEvent, new RoutedEventHandler(this.OnMouseLeftButtonDown));
+
+
 
                 //element.MouseDown += this.ElementOnMouseDown;
                 element.MouseMove += this.ElementOnMouseMove;
                 element.MouseUp += this.ElementOnMouseUp;
                 element.LostMouseCapture += Element_LostMouseCapture;
+            }
+
+            private void CanvasMouseButtonDown(object sender, RoutedEventArgs e)
+            {
+                _isOnCavasClicked = true;
+            }
+
+            private void CanvasMouseButtonUp(object sender, RoutedEventArgs e)
+            {
+                if (_isOnCavasClicked)
+                {
+                    var sv = sender as ListBox;
+                    sv.UnselectAll();
+                    _isOnCavasClicked = false;
+                }
+                
             }
 
             private void Element_LostMouseCapture(object sender, MouseEventArgs e)
@@ -314,8 +348,7 @@ namespace PropertyExplorerTest.Behaviors
 
                 if (object.ReferenceEquals(element, this._element) == false)
                 {
-                    if (this._isZTop)
-                        this.SetZLevelRevert();
+                    
                     return;
                 }
 
@@ -336,9 +369,6 @@ namespace PropertyExplorerTest.Behaviors
 
                 if (object.ReferenceEquals(element, this._element) == false) 
                 {
-                    if (this._isZTop)
-                        this.SetZLevelRevert();
-
                     return;
                 }
 
@@ -388,11 +418,12 @@ namespace PropertyExplorerTest.Behaviors
             /// <returns></returns>
             private int GetZIndex(FrameworkElement element)
             {
-                this._savedZLevel = Canvas.GetZIndex(element);
+                var z = Panel.GetZIndex(element);
+                //var z = Canvas.GetZIndex(element);
                 //Canvas.SetZIndex(element);
-                this._savedZLevel = this._savedZLevel == 0 ? 0 : this._savedZLevel;
+                z = z == 0 ? 0 : z;
 
-                return this._savedZLevel;
+                return z;
             }
 
             //private void ElementOnMouseDown(object sender, MouseButtonEventArgs e)
@@ -451,6 +482,9 @@ namespace PropertyExplorerTest.Behaviors
                 {
                     return;
                 }
+
+                if (this._isZTop)
+                    this.SetZLevelRevert();
 
                 this._isCaptured = false;
 

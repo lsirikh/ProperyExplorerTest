@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:behaviors="clr-namespace:PropertyExplorerTest.Behaviors"
     xmlns:viewModels="clr-namespace:PropertyExplorerTest.ViewModels"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     mc:Ignorable="d"
     d:DesignHeight="850"
     d:DesignWidth="1200"
@@ -42,19 +43,23 @@
                     Background="Transparent"
                     ItemsSource="{Binding Items}"
                     SelectionMode="Extended"
-                    SelectedItem="{Binding SelectedShape}"
+                    SelectedItem="{Binding SelectedShape, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Margin="5"
-                    PreviewMouseLeftButtonDown="CanvasListBox_PreviewMouseLeftButtonDown"
                     >
+                    
+                    <ListBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem x:Name="Property" Header="Property" Command="{Binding SelectModelCommand}" 
+                                      CommandParameter="{Binding SelectedShape}"/>
+                        </ContextMenu>
+                    </ListBox.ContextMenu>
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-
                             <Canvas
                                 ClipToBounds="True"
                                 SnapsToDevicePixels="True"
                                 Margin="5" 
                                 >
-                                
                             </Canvas>
                         </ItemsPanelTemplate>
                         
@@ -70,6 +75,7 @@
                             <Setter Property="behaviors:InCanvasMovingBehavior.ZLevel" Value="{Binding ZLevel.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.Captured" Value="{Binding IsSelected, RelativeSource={RelativeSource Self}}" />
                         </Style>
+                        
                     </ItemsControl.ItemContainerStyle>
                 </ListBox>
             </Border>
@@ -82,8 +88,9 @@
             Background="#FF9C9C9C"
             />
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" x:Name="PropertyWindow">
             <ContentControl Content="{Binding PropertyExplorer}" />
+            
         </Grid>
     </Grid>
 </UserControl>

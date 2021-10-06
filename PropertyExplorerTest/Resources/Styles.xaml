@@ -20,6 +20,20 @@
     <Color x:Key="BorderLightColor">#FFCCCCCC</Color>
     <Color x:Key="BorderDarkColor">#FF444444</Color>
 
+
+    <Storyboard x:Key="MenuOpen">
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+            <EasingDoubleKeyFrame KeyTime="0" Value="60"/>
+            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="200"/>
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+    <Storyboard x:Key="MenuClose">
+        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+            <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+            <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="60"/>
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
     <!-- 순수하게 스타일적인 요소만 바인딩 되어있고, 데이터 관련 바인딩은 모두 배제되어있다. -->
     <Style x:Key="SelectorStyle" TargetType="{x:Type CheckBox}">
         <Setter Property="SnapsToDevicePixels" Value="true" />

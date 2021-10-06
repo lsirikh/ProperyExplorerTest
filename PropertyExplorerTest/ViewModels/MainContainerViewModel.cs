@@ -1,14 +1,17 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using PropertyExplorerTest.Defines.Interfaces;
 using PropertyExplorerTest.Models;
+using PropertyExplorerTest.ViewModels.Commands;
 using PropertyExplorerTest.ViewModels.Shapes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PropertyExplorerTest.ViewModels
@@ -22,9 +25,17 @@ namespace PropertyExplorerTest.ViewModels
         /// Model선택을 위한 RelayCommand 변수이며 타입은 IPropertyOperative
         /// 인터페이스 타입을 받는다.
         /// </summary>
-        private RelayCommand<IPropertyOperative> _selectModelCommand;
+        //private RelayCommand<IPropertyOperative> _selectModelCommand;
+
+        /// <summary>
+        /// 바인딩된 Command를 통해 SelectModelCommand가 수행되면 아래
+        /// Command Method가 수행되고 Callback Method인 SelectModel이 수행된다.
+        /// </summary>
+        public ICommand SelectModelCommand { get; set; }
         
-        private BaseShapeViewModel _selectedShape;        
+
+        //public SelectItemCommand<IPropertyOperative> SelectModelCommand { get; set; }
+
 
         /// <summary>
         /// ItemControl의 ItemSource로 활용되는 ObservableCollection 변수이다.
@@ -32,22 +43,20 @@ namespace PropertyExplorerTest.ViewModels
         /// </summary>
         public ObservableCollection<BaseShapeViewModel> Items { get; } = new ObservableCollection<BaseShapeViewModel>();
 
+        private BaseShapeViewModel _selectedShape;
+
         public BaseShapeViewModel SelectedShape
         {
             get => _selectedShape;
             set
             {
                 this.SetProperty(ref this._selectedShape, value);
-                this.SelectModel(this._selectedShape);
+                Debug.WriteLine($"SelectedShape: {_selectedShape}");
+                //this.SelectModel(this._selectedShape);
             }
-        }     
+        }
 
-        /// <summary>
-        /// 바인딩된 Command를 통해 SelectModelCommand가 수행되면 아래
-        /// Command Method가 수행되고 Callback Method인 SelectModel이 수행된다.
-        /// </summary>
-        public ICommand SelectModelCommand =>
-              this._selectModelCommand ?? (this._selectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel));
+        //this._selectModelCommand ?? (this._selectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel));
 
         /// <summary>
         /// PropertyExplorer 인스턴스 생성 및 초기화
@@ -70,6 +79,10 @@ namespace PropertyExplorerTest.ViewModels
         /// </summary>
         public MainContainerViewModel()
         {
+            //SelectModelCommand = this._selectModelCommand ?? (this._selectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel));
+            SelectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel, canExecute);
+            //SelectModelCommand = new SelectItemCommand<IPropertyOperative>(this);
+
             Random rand = new Random();
             var min = 1;
             var max = 600;
@@ -79,16 +92,27 @@ namespace PropertyExplorerTest.ViewModels
             this.Items.Add(new RectViewModel(rectModel));
             this.Items.Add(new EllipseViewModel(ellipseModel));
             this.Items.Add(new LineViewModel(lineModel));
+
+        }
+        
+        private bool canExecute(IPropertyOperative arg)
+        {
+            if (arg != null)
+                return true;
+            else
+                return false;
         }
 
+                
         /// <summary>
         /// Model 선택에 따른 해당 모델에 설정된 속성 정보를 
         /// Property를 PropertyChange를 위한 목록에 등록하는 과정
         /// </summary>
         /// <param name="model"></param>
-        private void SelectModel(IPropertyOperative model)
+        public void SelectModel(IPropertyOperative model)
         {
-            this.PropertyExplorer.SelectModel(model);
+            if(model != null)
+                this.PropertyExplorer.SelectModel(model);
         }
     }
 }
