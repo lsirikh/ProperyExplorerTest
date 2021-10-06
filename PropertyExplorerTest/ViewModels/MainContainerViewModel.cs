@@ -31,9 +31,11 @@ namespace PropertyExplorerTest.ViewModels
         /// 바인딩된 Command를 통해 SelectModelCommand가 수행되면 아래
         /// Command Method가 수행되고 Callback Method인 SelectModel이 수행된다.
         /// </summary>
-        public ICommand SelectModelCommand { get; set; }
-        
+        public ICommand SelectModelCommand => new RelayCommand<IPropertyOperative>(
+                execute: SelectModel,
+                canExecute: CanExecuteSelectModel);
 
+        ///
         //public SelectItemCommand<IPropertyOperative> SelectModelCommand { get; set; }
 
 
@@ -51,10 +53,28 @@ namespace PropertyExplorerTest.ViewModels
             set
             {
                 this.SetProperty(ref this._selectedShape, value);
+
+                if (_selectedShape == null)
+                    _isPropertyShow = false;
+
                 Debug.WriteLine($"SelectedShape: {_selectedShape}");
                 //this.SelectModel(this._selectedShape);
             }
         }
+
+        //Visibility
+        private bool _isPropertyShow;
+
+        public bool IsPropertyShow
+        {
+            get => _isPropertyShow; 
+            set 
+            {
+                this.SetProperty(ref this._isPropertyShow, value);
+                Debug.WriteLine($"IsPropertyShow: {_isPropertyShow}");
+            }
+        }
+
 
         //this._selectModelCommand ?? (this._selectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel));
 
@@ -63,16 +83,7 @@ namespace PropertyExplorerTest.ViewModels
         /// </summary>
         public PropertyExplorerViewModel PropertyExplorer { get; set; } = new PropertyExplorerViewModel();
 
-        /// <summary>
-        /// 테스트
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void OnMouseLeftClick(object sender, MouseButtonEventArgs e)
-        {
-            // 사용 안 함
-        }
-
+        
         /// <summary>
         /// 생성자를 통한 초기화
         /// 사각형, 타원(원), 선을 초기에 등록한다.
@@ -80,7 +91,6 @@ namespace PropertyExplorerTest.ViewModels
         public MainContainerViewModel()
         {
             //SelectModelCommand = this._selectModelCommand ?? (this._selectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel));
-            SelectModelCommand = new RelayCommand<IPropertyOperative>(this.SelectModel, canExecute);
             //SelectModelCommand = new SelectItemCommand<IPropertyOperative>(this);
 
             Random rand = new Random();
@@ -93,9 +103,10 @@ namespace PropertyExplorerTest.ViewModels
             this.Items.Add(new EllipseViewModel(ellipseModel));
             this.Items.Add(new LineViewModel(lineModel));
 
+
         }
         
-        private bool canExecute(IPropertyOperative arg)
+        private bool CanExecuteSelectModel(IPropertyOperative arg)
         {
             if (arg != null)
                 return true;
@@ -111,8 +122,12 @@ namespace PropertyExplorerTest.ViewModels
         /// <param name="model"></param>
         public void SelectModel(IPropertyOperative model)
         {
-            if(model != null)
+            Debug.WriteLine("SelectModel method was executed.");
+            if (model != null)
+            {
+                _isPropertyShow = true;
                 this.PropertyExplorer.SelectModel(model);
+            }
         }
     }
 }

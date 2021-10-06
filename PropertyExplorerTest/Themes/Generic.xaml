@@ -11,13 +11,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type control:DisplayPresenter}">
-                    <Border x:Name="Border">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="SelectionStates">
-                                <VisualState x:Name="Unselected"/>
-
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+                        
                         <Grid>
 
                             <Grid.RowDefinitions>
@@ -79,7 +73,6 @@
                             </Grid>
 
                         </Grid>
-                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
