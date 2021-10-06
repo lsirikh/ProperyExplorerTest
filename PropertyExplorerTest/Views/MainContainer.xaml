@@ -39,18 +39,44 @@
                 Width="1024"
                 Height="768"
                 >
-                <ListBox x:Name ="CanvasListBox"
+                <ListBox
+                    x:Name="CanvasListBox"
                     Background="Transparent"
                     ItemsSource="{Binding Items}"
                     SelectionMode="Extended"
                     SelectedItem="{Binding SelectedShape, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Margin="5"
+                    Tag="{Binding}"
                     >
-                    
+
+                    <!-- MenuItem CommandParamter resolved -->
                     <ListBox.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem x:Name="Property" Header="Property" Command="{Binding SelectModelCommand}" 
-                                      CommandParameter="{Binding SelectedShape}"/>
+                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                            <ContextMenu.Tag>
+                                <Binding
+                                    Path="DataContext"
+                                    RelativeSource="{RelativeSource Self}"
+                                    />
+                            </ContextMenu.Tag>
+                            <MenuItem
+                                x:Name="Property"
+                                Header="Property"
+                                >
+                                <MenuItem.Command>
+                                    <Binding
+                                        Path="DataContext.SelectModelCommand"
+                                        RelativeSource="{RelativeSource AncestorType={x:Type ContextMenu}}"
+                                        />
+                                </MenuItem.Command>
+                                <MenuItem.CommandParameter>
+                                    <!-- I don'y know either why can not access by DataContext. -->
+                                    <Binding
+                                        Path="Tag.SelectedShape"
+                                        Mode="TwoWay"
+                                        RelativeSource="{RelativeSource AncestorType={x:Type ContextMenu}}"
+                                        />
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
                     <ListBox.ItemsPanel>
@@ -58,11 +84,11 @@
                             <Canvas
                                 ClipToBounds="True"
                                 SnapsToDevicePixels="True"
-                                Margin="5" 
+                                Margin="5"
                                 >
                             </Canvas>
                         </ItemsPanelTemplate>
-                        
+
                     </ListBox.ItemsPanel>
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
@@ -75,7 +101,7 @@
                             <Setter Property="behaviors:InCanvasMovingBehavior.ZLevel" Value="{Binding ZLevel.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.Captured" Value="{Binding IsSelected, RelativeSource={RelativeSource Self}}" />
                         </Style>
-                        
+
                     </ItemsControl.ItemContainerStyle>
                 </ListBox>
             </Border>
@@ -88,9 +114,12 @@
             Background="#FF9C9C9C"
             />
 
-        <Grid Grid.Column="1" x:Name="PropertyWindow">
+        <Grid
+            Grid.Column="1"
+            x:Name="PropertyWindow"
+            >
             <ContentControl Content="{Binding PropertyExplorer}" />
-            
+
         </Grid>
     </Grid>
 </UserControl>

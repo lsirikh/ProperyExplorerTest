@@ -1,17 +1,10 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using PropertyExplorerTest.Defines.Interfaces;
 using PropertyExplorerTest.Models;
-using PropertyExplorerTest.ViewModels.Commands;
 using PropertyExplorerTest.ViewModels.Shapes;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PropertyExplorerTest.ViewModels
@@ -32,7 +25,7 @@ namespace PropertyExplorerTest.ViewModels
         /// Command Method가 수행되고 Callback Method인 SelectModel이 수행된다.
         /// </summary>
         public ICommand SelectModelCommand { get; set; }
-        
+
 
         //public SelectItemCommand<IPropertyOperative> SelectModelCommand { get; set; }
 
@@ -94,7 +87,7 @@ namespace PropertyExplorerTest.ViewModels
             this.Items.Add(new LineViewModel(lineModel));
 
         }
-        
+
         private bool canExecute(IPropertyOperative arg)
         {
             if (arg != null)
@@ -103,7 +96,7 @@ namespace PropertyExplorerTest.ViewModels
                 return false;
         }
 
-                
+
         /// <summary>
         /// Model 선택에 따른 해당 모델에 설정된 속성 정보를 
         /// Property를 PropertyChange를 위한 목록에 등록하는 과정
@@ -111,7 +104,7 @@ namespace PropertyExplorerTest.ViewModels
         /// <param name="model"></param>
         public void SelectModel(IPropertyOperative model)
         {
-            if(model != null)
+            if (model != null)
                 this.PropertyExplorer.SelectModel(model);
         }
     }
