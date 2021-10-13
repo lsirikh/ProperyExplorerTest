@@ -35,9 +35,30 @@ namespace PropertyExplorerTest.ViewModels
                 execute: SelectModel,
                 canExecute: CanExecuteSelectModel);
 
-        ///
-        //public SelectItemCommand<IPropertyOperative> SelectModelCommand { get; set; }
+        /*
+         * # isPropertyCommandExecuted는 아래와 같이 동작한다.
+         * 1. Shape의 속성(Property)를 클릭하면, true로 전환
+         * 2. 다른 Shape을 클릭하여도, true로 유지
+         * 3. 바탕화면을 클릭하면 false로 전환
+         */
 
+        private bool isPropertyCommandExecuted = false;
+
+
+        public ICommand CreateCircleCommand => new RelayCommand<EllipseModel>(
+            execute: CreateCircleCmd,
+            canExecute: CanCreateCircleCmd);
+
+        public bool CanCreateCircleCmd(EllipseModel arg)
+        {
+            return true;
+        }
+
+        public void CreateCircleCmd(EllipseModel arg)
+        {
+            var ellipseModel = new EllipseModel();
+            this.Items.Add(new EllipseViewModel(ellipseModel));
+        }
 
         /// <summary>
         /// ItemControl의 ItemSource로 활용되는 ObservableCollection 변수이다.
@@ -52,10 +73,23 @@ namespace PropertyExplorerTest.ViewModels
             get => _selectedShape;
             set
             {
+                //_selectedShape 갱신 및 이 메소드의 Initializer 역할
                 this.SetProperty(ref this._selectedShape, value);
 
+                //_selectedShape이 null이면, PropertyExplorer를 닫아준다.
+                //그리고, isPropertyCommandExecuted의 속성도 false가 된다.
+                //당연히 창이 닫혔는데 isPropertyCommandExecuted가 참 일 수 없다.
                 if (_selectedShape == null)
-                    _isPropertyShow = false;
+                {
+                    this.SetProperty(ref this._isPropertyShow, false, "IsPropertyShow");
+                    isPropertyCommandExecuted = false;
+                }
+
+                //_selectedShape의 갱신 후,
+                //PropertyCommand가 실행된 상태, 즉 isPropertyCommandExecuted가
+                //true면 PropertyExplorer를 갱신해주기 위한 업데이트 메소드 수행
+                if (isPropertyCommandExecuted)
+                    this.SelectModel(this._selectedShape);
 
                 Debug.WriteLine($"SelectedShape: {_selectedShape}");
                 //this.SelectModel(this._selectedShape);
@@ -99,13 +133,23 @@ namespace PropertyExplorerTest.ViewModels
             var rectModel = new RectModel((double)rand.Next(min, max), (double)rand.Next(min, max));
             var ellipseModel = new EllipseModel();
             var lineModel = new LineModel((double)rand.Next(min, max), (double)rand.Next(min, max));
+            var lineModel1 = new LineModel((double)rand.Next(min, max), (double)rand.Next(min, max));
             this.Items.Add(new RectViewModel(rectModel));
             this.Items.Add(new EllipseViewModel(ellipseModel));
             this.Items.Add(new LineViewModel(lineModel));
+            this.Items.Add(new LineViewModel(lineModel1));
 
 
         }
         
+        /// <summary>
+        /// SelectModel을 검증하기 위한 CanExecuteSelectModel,
+        /// arg 즉 model의 내용이 null이면,
+        /// SubMenu의 Property의 내용은 비활성화된다.
+        /// Vice versa...
+        /// </summary>
+        /// <param name="arg"></param>
+        /// <returns></returns>
         private bool CanExecuteSelectModel(IPropertyOperative arg)
         {
             if (arg != null)
@@ -125,7 +169,8 @@ namespace PropertyExplorerTest.ViewModels
             Debug.WriteLine("SelectModel method was executed.");
             if (model != null)
             {
-                _isPropertyShow = true;
+                isPropertyCommandExecuted = true;
+                this.SetProperty(ref this._isPropertyShow, true, "IsPropertyShow");
                 this.PropertyExplorer.SelectModel(model);
             }
         }

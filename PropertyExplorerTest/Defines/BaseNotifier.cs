@@ -41,6 +41,14 @@ namespace PropertyExplorerTest.Defines
             this.FireNotification(sender, propertyName);
         }
 
+        /// <summary>
+        /// 기존의 field의 값과 newValue의 값을 비교해서, 차이가 있으면
+        /// propertyName을 갖고 최종적으로 PropertyChanged?.Invoke 작업을 수행함.
+        /// </summary>
+        /// <typeparam name="T">Generic 타입</typeparam>
+        /// <param name="field">기존 데이터</param>
+        /// <param name="newValue">새로 변경되었거나 이벤트시 입력된 데이터</param>
+        /// <param name="propertyName">의존속성(xaml)에 연결할 명사적 단어 혹은 명칭</param>
         protected void SetProperty<T>(ref T field, T newValue, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, newValue))

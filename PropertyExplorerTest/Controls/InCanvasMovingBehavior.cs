@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -45,7 +47,19 @@ namespace PropertyExplorerTest.Behaviors
 
         #endregion
 
+        #region InCanvasMovingBehavior Field
+        //멀티셀렉팅을 위한 Collection Type의 변수 선언
+        private static List<ElementControl> _selectedList = new List<ElementControl>();
+
+        private static ElementControl _curElementControl;
+
+        private static Point _refPoint;
+
+        private static bool _isRemoved;
+
         
+        #endregion
+
 
         #region Attached Property 등록 Capture, Panning, X, Y
         /// <summary>
@@ -127,6 +141,7 @@ namespace PropertyExplorerTest.Behaviors
 
             // 필요시 따로 보관한다.
             var infra = new PanningStructure(element);
+            Debug.WriteLine($"infra was created");
         }
 
         /// <summary>
@@ -262,8 +277,11 @@ namespace PropertyExplorerTest.Behaviors
             return null;
         }
 
-        public class PanningStructure : DependencyObject
+
+        public class PanningStructure 
         {
+
+
             private bool _isCaptured;
 
             private bool _isZTop = false;
@@ -277,7 +295,7 @@ namespace PropertyExplorerTest.Behaviors
             /// <summary>
             /// 마우스 다운 위치로부터 오브젝트의 좌상단을 보정하기 위한 포인트.
             /// </summary>
-            private Point _originPoint;
+            //private Point _originPoint;
 
             private Canvas _parent;
 
@@ -286,7 +304,6 @@ namespace PropertyExplorerTest.Behaviors
             public PanningStructure(FrameworkElement element)
             {
                 this._element = element;
-
                 this._parent = FindParentOfType<Canvas>(element);
                 if (this._parent == null)
                 {
@@ -304,12 +321,7 @@ namespace PropertyExplorerTest.Behaviors
                 EventManager.RegisterClassHandler(typeof(ListBox), ListBox.MouseRightButtonUpEvent, new RoutedEventHandler(CanvasMouseButtonUp));
 
 
-
-
                 EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.MouseLeftButtonDownEvent, new RoutedEventHandler(this.OnMouseLeftButtonDown));
-
-                EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.MouseRightButtonDownEvent, new RoutedEventHandler(this.OnMouseLeftButtonDown));
-
 
 
                 //element.MouseDown += this.ElementOnMouseDown;
@@ -317,6 +329,7 @@ namespace PropertyExplorerTest.Behaviors
                 element.MouseUp += this.ElementOnMouseUp;
                 element.LostMouseCapture += Element_LostMouseCapture;
             }
+                        
 
             private void CanvasMouseButtonDown(object sender, RoutedEventArgs e)
             {
@@ -329,6 +342,9 @@ namespace PropertyExplorerTest.Behaviors
                 {
                     var sv = sender as ListBox;
                     sv.UnselectAll();
+                    _selectedList.Clear();
+                    _refPoint = new Point();
+                    Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
                     _isOnCavasClicked = false;
                 }
                 
@@ -357,21 +373,97 @@ namespace PropertyExplorerTest.Behaviors
 
             private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
             {
+
+                //e가 null이 아닌경우 MouseButtonEventArgs인 mouseArg로 캐스팅
                 if (!(e is MouseButtonEventArgs mouseArg))
                 { 
                     return;
                 }
 
+                //sender가 null이 아닌경우 FrameworkElement element 캐스팅
                 if (!(sender is FrameworkElement element))
                 {
                     return;
                 }
-
-                if (object.ReferenceEquals(element, this._element) == false) 
+                
+                //전체 캔버스에 올라간 오브젝트 만큼 반복하기 때문에
+                //선택한 오브젝트 이외에 다른 오브젝트는 무시
+                if (object.ReferenceEquals(element, this._element) == false)
                 {
                     return;
                 }
 
+                //ElementControl을 만들때, element가 존재하는지 확인하고,
+                //만들어야 한다.
+
+                ElementControl elementControl = new ElementControl(element);
+                bool isRemoved = false;
+                
+                foreach (var item in _selectedList)
+                {
+                    if (item.selectedItem == element)
+                    {
+                        elementControl = item;
+                        break;
+                    }
+                }
+                Debug.WriteLine("++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    //_selectedList 검증 프로세스
+                    if (_selectedList.Contains(elementControl))
+                    {
+                        Debug.WriteLine($"{elementControl.selectedItem}({elementControl.selectedItem.GetHashCode()}) is contained and removed");
+                        _selectedList.Remove(elementControl);
+                        _isRemoved = true;
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"{elementControl.selectedItem}({elementControl.selectedItem.GetHashCode()}) is not contained and added");
+                        _selectedList.Add(elementControl);
+                    }
+                }
+                else
+                {
+                    _selectedList.Clear();
+                    _selectedList.Add(elementControl);
+                    Debug.WriteLine($"{_selectedList.FirstOrDefault().selectedItem}({elementControl.selectedItem.GetHashCode()}) was added first");
+                }
+
+                Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
+                Debug.WriteLine("---------------------------------------------------");
+                (_refPoint.X, _refPoint.Y) = GetElementPosition(element);
+
+                foreach (var item in _selectedList.Select((value, index) => (value, index)))
+                {
+                    item.value.isCaptured = true;
+                    if ((item.index == _selectedList.Count - 1) && _isRemoved)
+                    {
+                        item.value.selectedItem.CaptureMouse();
+                    }
+                }
+
+                if (!_isRemoved)
+                {
+                    elementControl.isCaptured = true;
+
+                    elementControl.originPoint = mouseArg.GetPosition(this._parent);
+
+                    (elementControl.left, elementControl.top) = GetElementPosition(element);
+
+                    elementControl.originPoint.X -= elementControl.left;
+                    elementControl.originPoint.Y -= elementControl.top;
+
+                    _curElementControl = elementControl;
+
+                    //Debug.WriteLine($"==============> _refPoint.X : {_refPoint.X}, _refPoint.Y : {_refPoint.Y}");
+
+                    elementControl.selectedItem.CaptureMouse();
+                }
+                
+                #region Single Object Control
+                /*
+                 * 
                 this._isCaptured = true;
 
                 this._originPoint = mouseArg.GetPosition(this._parent);
@@ -381,16 +473,106 @@ namespace PropertyExplorerTest.Behaviors
                 if (!this._isZTop)
                     this.SetTopLevel(this._element);
 
-                //var z = this.GetZIndex(element);
                 this._originPoint.X -= left;
                 this._originPoint.Y -= top;
-                
-                //Temporally Set Z index to Highest Layer
-                //this._parent.
+
+                Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
 
                 element.CaptureMouse();
 
-                Debug.WriteLine($"[shwlee] 1111~~~~~~~~~~~~ element:{this._element.GetHashCode()}, IsCaptured:{this._isCaptured}, Mosue:{this._element.IsMouseCaptured}");
+                Debug.WriteLine($"[shwlee] 1111~~~~~~~~~~~~ element:{this._element.GetHashCode()}, IsCaptured:{this._isCaptured}, Mouse:{this._element.IsMouseCaptured}");*/
+                #endregion
+            }
+
+            private void ElementOnMouseMove(object sender, MouseEventArgs e)
+            {
+                if (_isRemoved)
+                    return;
+                
+                if(e.LeftButton == MouseButtonState.Pressed)
+                {
+                    //상대적 위치 이동을 계산하기 위해서 sender로 넘어온
+                    //최종 오브젝트의 좌표값을 확보하기 위해서 referElement 받아옴
+                    FrameworkElement referElement = sender as FrameworkElement;
+
+                    //현재 클릭된 대상을 위한 기준 Position
+                    var position = e.GetPosition(this._parent);
+                    
+                    //기존에 클릭된 대상을 위한 reference position 상대적 위치 이동 값
+                    (double refX, double refY) = GetElementPosition(referElement);
+
+                    //Debug.WriteLine($"+++++++++++++Point X:{position.X }, Point Y:{position.Y}");
+                    //Debug.WriteLine($"*************dx:{refX - _refPoint.X}, dy:{refY - _refPoint.Y}");
+
+                    //최종적으로 Canvas좌표 입력에 활용할 필드
+                    double x, y;
+
+                    //_selectedList에 있는 ElementControl 인스턴스를 순차적으로 컨트롤
+                    foreach (var item in _selectedList)
+                    {
+                        //item.isCaptured 조건이 만족하는 경우 실행
+                        //Debug.WriteLine($"Type:{item.selectedItem.GetHashCode()}, isCapture:{item.isCaptured}, left:{item.left}, top:{item.top}, origin:{item.originPoint.X}, {item.originPoint.Y}");
+
+                        if (item.isCaptured)
+                        {
+                            //마우스 포인터의 상대적움직임을 반영해야된다.
+                            //Debug.WriteLine($"Move Item : {item.selectedItem}");
+                            //Debug.WriteLine($"item.originPoint.X: {item.originPoint.X}, position.X: {position.X}, _refPoint.X: {_refPoint.X}");
+                            
+                            //서로 참조하는 기준이 다르기 때문에 
+                            //마우스 포인터가 위치한 오브젝트와 선택만 된 오브젝트는
+                            //서로 다르게 동작한다.
+                            if (item.selectedItem == referElement)
+                            {
+                                //현재 클릭한 오브젝트의 위치를 움직인다.
+                                //즉, position에 있는 값을 기반으로 위치이동 
+                                x = position.X - item.originPoint.X;
+                                y = position.Y - item.originPoint.Y;
+                            }
+                            else
+                            {
+                                //마우스 움직임 Delta 값을 찾아서 넣어준다.
+                                //x = item.left + delta.x 이렇게 변경
+                                x = item.left + (refX - _refPoint.X);
+                                y = item.top + (refY - _refPoint.Y);
+                            }
+
+                            //최종적으로 Canvas위치에 의존된 AttachedProperty에 입력
+                            InCanvasMovingBehavior.SetX(item.selectedItem, x);
+                            InCanvasMovingBehavior.SetY(item.selectedItem, y);
+
+                            //인스턴스 값에도 반영
+                            item.left = x;
+                            item.top = y;
+                        }
+                    }
+                    //레퍼런스 포인트를 갱신해준다.
+                    (_refPoint.X, _refPoint.Y) = (refX, refY);
+                }
+
+            }
+
+            private void ElementOnMouseUp(object sender, MouseButtonEventArgs e)
+            {
+                if (!(sender is FrameworkElement element))
+                {
+                    return;
+                }
+                
+                /*
+                    if (this._isZTop)
+                        this.SetZLevelRevert();
+                */
+
+                foreach (var item in _selectedList)
+                {
+                    item.isCaptured = false;
+                    item.selectedItem.ReleaseMouseCapture();
+                }
+
+                if (_isRemoved)
+                    _isRemoved = false;
+
             }
 
             private void SetZLevelRevert()
@@ -452,46 +634,47 @@ namespace PropertyExplorerTest.Behaviors
                 var top = Canvas.GetTop(element);
                 top = top == double.NaN ? 0 : top;
 
-                
-
                 return (left, top);
             }
 
-            private void ElementOnMouseMove(object sender, MouseEventArgs e)
-            {
-                if (this._isCaptured == false)
-                {
-                    return;
-                }
+            
+        }
+        
+    }
 
-                var position = e.GetPosition(this._parent);
+    public class ElementControl
+    {
+        public FrameworkElement selectedItem { get; set; }
 
-                var x = position.X - this._originPoint.X;
-                var y = position.Y - this._originPoint.Y;
+        public bool isCaptured;
 
-                InCanvasMovingBehavior.SetX(this._element, x);
-                InCanvasMovingBehavior.SetY(this._element, y);
+        public Point originPoint;
 
+        public double left;
+        public double top;
 
-                Debug.WriteLine($"[shwlee] 222~~~~~~~~~~~~ element:{this._element.GetHashCode()}, IsCaptured:{this._isCaptured}, Mosue:{this._element.IsMouseCaptured}");
-            }
+        public ElementControl(FrameworkElement item)
+        {
+            isCaptured = false;
+            selectedItem = item;
+            (left, top) = this.GetElementPosition(selectedItem);
 
-            private void ElementOnMouseUp(object sender, MouseButtonEventArgs e)
-            {
-                if (!(sender is FrameworkElement element))
-                {
-                    return;
-                }
-
-                if (this._isZTop)
-                    this.SetZLevelRevert();
-
-                this._isCaptured = false;
-
-                element.ReleaseMouseCapture();
-            }
         }
 
-        
+        private (double, double) GetElementPosition(FrameworkElement element)
+        {
+            var left = Canvas.GetLeft(element);
+            left = left == double.NaN ? 0 : left;
+            var top = Canvas.GetTop(element);
+            top = top == double.NaN ? 0 : top;
+
+            return (left, top);
+        }
+
+        public void UpdateElementPosition()
+        {
+            (left, top) = this.GetElementPosition(selectedItem);
+        }
+
     }
 }
