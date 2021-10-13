@@ -73,6 +73,9 @@
                                     UpdateSourceTrigger="PropertyChanged"
                                     />
                             </ContextMenu.Tag>
+                            <!--새로운 메뉴를 추가합니다.-->
+                            <!--MainContainerViewModel.cs에 있는 CreateCircleCommand와
+                            연동을 하고, 파라미터로 마우스클릭 위치를 전송하는 것입니다.-->
                             <MenuItem
                                 x:Name="AddCircle"
                                 Header="Add _Circle">
