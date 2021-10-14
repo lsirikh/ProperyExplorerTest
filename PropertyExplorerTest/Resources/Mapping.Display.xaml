@@ -26,6 +26,8 @@
             X="{Binding X.Value}"
             Y="{Binding Y.Value}"
             Label="{Binding Name.Value}"
+            LocationShow="{Binding IsLocationShow.Value}"
+            LabelShow="{Binding IsNameShow.Value}"
             >
             <Rectangle
                 Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -45,6 +47,8 @@
             X="{Binding X.Value}"
             Y="{Binding Y.Value}"
             Label="{Binding Name.Value}"
+            LocationShow="{Binding IsLocationShow.Value}"
+            LabelShow="{Binding IsNameShow.Value}"
             >
             <Ellipse
                 Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -64,6 +68,8 @@
             X="{Binding X.Value}"
             Y="{Binding Y.Value}"
             Label="{Binding Name.Value}"
+            LocationShow="{Binding IsLocationShow.Value}"
+            LabelShow="{Binding IsNameShow.Value}"
             >
             <Line
                 Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -143,18 +149,27 @@
         </Grid>
     </DataTemplate>
 
+    <!-- propertyModels의 Double 형 타입은 DoublePropertySet을 통해 필터링 -->
     <DataTemplate DataType="{x:Type propertyModels:DoublePropertySet}">
         <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
     </DataTemplate>
 
+    <!-- propertyModels의 Int 형 타입은 IntPropertySet을 통해 필터링 -->
     <DataTemplate DataType="{x:Type propertyModels:IntPropertySet}">
         <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
     </DataTemplate>
 
+    <!-- propertyModels의 String 형 타입은 StringPropertySet을 통해 필터링 -->
     <DataTemplate DataType="{x:Type propertyModels:StringPropertySet}">
         <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
     </DataTemplate>
 
+    <!-- propertyModels의 Bool 형 타입은 BoolPropertySet을 통해 필터링 -->
+    <DataTemplate DataType="{x:Type propertyModels:BoolPropertySet}">
+        <CheckBox IsChecked="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+    </DataTemplate>
+    
+    <!-- propertyModels의 Color 형 타입은 ColorPropertySet을 통해 필터링 -->
     <DataTemplate DataType="{x:Type propertyModels:ColorPropertySet}">
         <xctk:ColorPicker SelectedColor="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
     </DataTemplate>

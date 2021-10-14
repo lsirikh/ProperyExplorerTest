@@ -24,7 +24,6 @@ namespace PropertyExplorerTest.Views
         {
             InitializeComponent();
         }
-
         
     }
 }

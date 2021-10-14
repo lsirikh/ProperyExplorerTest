@@ -28,6 +28,8 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
         public IPropertySet Name { get; }
 
+        public IPropertySet IsNameShow { get; }
+
         public IPropertySet Group { get; }
 
         public IPropertySet ZLevel { get; }
@@ -39,6 +41,8 @@ namespace PropertyExplorerTest.ViewModels.Shapes
         public IPropertySet X { get; set; }
 
         public IPropertySet Y { get; set; }
+
+        public IPropertySet IsLocationShow { get; set; }
 
         public IPropertySet FillColor { get; }
 
@@ -67,17 +71,18 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
             //왜 이렇게 처리하는지 이해가 안됨.
             this.Id = new IntPropertySet(nameof(this.Id), () => model.Id, i => model.Id = i);
-
             this.Name = new StringPropertySet(nameof(this.Name), () => model.Name, n => model.Name = n);
-
+            this.IsNameShow = new BoolPropertySet(nameof(this.IsNameShow), () => model.IsNameShow, n => model.IsNameShow = n);
             this.Group = new IntPropertySet(nameof(this.Group), () => model.Group, g => model.Group = g);
-
-            this.ZLevel = new IntPropertySet(nameof(this.ZLevel), () => model.ZLevel, l => model.ZLevel = l);
 
             this.Width = new DoublePropertySet(nameof(this.Width), ()=> model.Width, w => model.Width = w) ;
             this.Height = new DoublePropertySet(nameof(this.Height), () => model.Height, h => model.Height = h);
+            
             this.X = new DoublePropertySet(nameof(this.X), () => model.X, x => model.X = x);
             this.Y = new DoublePropertySet(nameof(this.Y), () => model.Y, y => model.Y = y);
+            this.ZLevel = new IntPropertySet(nameof(this.ZLevel), () => model.ZLevel, l => model.ZLevel = l);
+            this.IsLocationShow = new BoolPropertySet(nameof(this.IsLocationShow), ()=> model.isLocationShow, l => model.isLocationShow = l);
+
             this.FillColor = new ColorPropertySet(nameof(this.FillColor), () => model.FillColor, f => model.FillColor = f);
             this.BorderColor = new ColorPropertySet(nameof(this.BorderColor), () => model.BorderColor, bc => model.BorderColor = bc);
             this.BorderThickness = new DoublePropertySet(nameof(this.BorderThickness), () => model.BorderThickness, bt => model.BorderThickness = bt);
@@ -96,6 +101,7 @@ namespace PropertyExplorerTest.ViewModels.Shapes
             var data = new PropertyCategory("Data");
             data.Properties.Add(new PropertyContainer(this.Id, data));
             data.Properties.Add(new PropertyContainer(this.Name, data));
+            data.Properties.Add(new PropertyContainer(this.IsNameShow, data));
             data.Properties.Add(new PropertyContainer(this.Group, data));
             this._categories.Add(data);
 
@@ -107,6 +113,7 @@ namespace PropertyExplorerTest.ViewModels.Shapes
             var location = new PropertyCategory("Location");
             location.Properties.Add(new PropertyContainer(this.X, location));
             location.Properties.Add(new PropertyContainer(this.Y, location));
+            location.Properties.Add(new PropertyContainer(this.IsLocationShow, location));
             size.Properties.Add(new PropertyContainer(this.ZLevel, location));
             this._categories.Add(location);
 

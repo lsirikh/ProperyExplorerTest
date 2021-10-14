@@ -12,7 +12,18 @@ namespace PropertyExplorerTest.Models
     /// </summary>
     public class EllipseModel : BaseModel
     {
-        
+        #region 생성자 및 생성자 오버라이딩
+        public EllipseModel()
+        {
+        }
 
+        public EllipseModel(double x, double y) : base(x, y)
+        {
+        }
+
+        public EllipseModel(double w, double h, double x, double y) : base(w, h, x, y)
+        {
+        }
+        #endregion
     }
 }

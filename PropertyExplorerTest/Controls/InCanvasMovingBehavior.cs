@@ -344,7 +344,7 @@ namespace PropertyExplorerTest.Behaviors
                     sv.UnselectAll();
                     _selectedList.Clear();
                     _refPoint = new Point();
-                    Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
+                    //Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
                     _isOnCavasClicked = false;
                 }
                 
@@ -397,7 +397,6 @@ namespace PropertyExplorerTest.Behaviors
                 //만들어야 한다.
 
                 ElementControl elementControl = new ElementControl(element);
-                bool isRemoved = false;
                 
                 foreach (var item in _selectedList)
                 {

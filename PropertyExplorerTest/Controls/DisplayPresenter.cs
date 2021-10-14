@@ -22,6 +22,20 @@ namespace PropertyExplorerTest.Controls
             set => SetValue(LabelProperty, value);
         }
 
+        public static readonly DependencyProperty LabelShowProperty = DependencyProperty.Register
+        (
+            name: nameof(LabelShow),
+            propertyType: typeof(bool),
+            ownerType: typeof(DisplayPresenter),
+            typeMetadata: new FrameworkPropertyMetadata(null)
+        );
+
+        public bool LabelShow
+        {
+            get => (bool)GetValue(LabelShowProperty);
+            set => SetValue(LabelShowProperty, value);
+        }
+
         public static readonly DependencyProperty XProperty = DependencyProperty.Register
         (
             name: nameof(X),
@@ -49,6 +63,20 @@ namespace PropertyExplorerTest.Controls
         {
             get => (double)GetValue(YProperty);
             set => SetValue(YProperty, value);
+        }
+
+        public static readonly DependencyProperty LocationShowProperty = DependencyProperty.Register
+        (
+            name: nameof(LocationShow),
+            propertyType: typeof(bool),
+            ownerType: typeof(DisplayPresenter),
+            typeMetadata: new FrameworkPropertyMetadata(null)
+        );
+
+        public bool LocationShow
+        {
+            get => (bool)GetValue(LocationShowProperty);
+            set => SetValue(LocationShowProperty, value);
         }
 
         static DisplayPresenter()

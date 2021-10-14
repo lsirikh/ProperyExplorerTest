@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using PropertyExplorerTest.Defines.Interfaces;
 using PropertyExplorerTest.Models;
-using PropertyExplorerTest.ViewModels.Commands;
 using PropertyExplorerTest.ViewModels.Shapes;
 using System;
 using System.Collections;
@@ -44,17 +43,27 @@ namespace PropertyExplorerTest.ViewModels
 
         private bool isPropertyCommandExecuted = false;
 
+        private ICommand _createCircleCommand;
 
-        public ICommand CreateCircleCommand => new RelayCommand<EllipseModel>(
-            execute: CreateCircleCmd,
-            canExecute: CanCreateCircleCmd);
-
-        public bool CanCreateCircleCmd(EllipseModel arg)
+        public ICommand CreateCircleCommand
         {
+            get 
+            {
+                return _createCircleCommand ?? (_createCircleCommand = new RelayCommand<Object>(
+                execute: CreateCircleCmd,
+                canExecute: CanCreateCircleCmd)
+                );
+            }
+            //set { _testCommand = value; }
+        }
+
+        public bool CanCreateCircleCmd(Object arg)
+        {
+            Debug.WriteLine($">>>>>>>>>({arg.ToString()})CanCreateCircleCmd<<<<<<<<<<<<");
             return true;
         }
 
-        public void CreateCircleCmd(EllipseModel arg)
+        public void CreateCircleCmd(Object arg)
         {
             var ellipseModel = new EllipseModel();
             this.Items.Add(new EllipseViewModel(ellipseModel));
@@ -131,7 +140,7 @@ namespace PropertyExplorerTest.ViewModels
             var min = 1;
             var max = 600;
             var rectModel = new RectModel((double)rand.Next(min, max), (double)rand.Next(min, max));
-            var ellipseModel = new EllipseModel();
+            var ellipseModel = new EllipseModel((double)rand.Next(min, max), (double)rand.Next(min, max));
             var lineModel = new LineModel((double)rand.Next(min, max), (double)rand.Next(min, max));
             var lineModel1 = new LineModel((double)rand.Next(min, max), (double)rand.Next(min, max));
             this.Items.Add(new RectViewModel(rectModel));

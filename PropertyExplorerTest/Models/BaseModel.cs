@@ -20,6 +20,11 @@ namespace PropertyExplorerTest.Models
         public string Name { get; set; } = "Untitled";
 
         /// <summary>
+        /// 제목 숨김/표지용
+        /// </summary>
+        public bool IsNameShow { get; set; } = true;
+
+        /// <summary>
         /// 맵아이디
         /// </summary>
         public int MapId { get; set; } = 1;
@@ -55,6 +60,11 @@ namespace PropertyExplorerTest.Models
         /// Canvas에 붙일 때 사용된다.
         /// </summary>
         public double Y { get; set; }
+
+        /// <summary>
+        /// 위치 정보 숨김/표시 용
+        /// </summary>
+        public bool isLocationShow { get; set; } = true;
 
         /// <summary>
         /// FillColor 도형 내부의 컬러

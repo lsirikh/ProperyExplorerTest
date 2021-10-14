@@ -62,10 +62,14 @@
                     Margin="5"
                     Tag="{Binding}"
                     >
-                    
+
+                    <!-- ListBox ContextMenu 파트 시작 -->
                     <ListBox.ContextMenu>
-                        <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}, 
-                            UpdateSourceTrigger=PropertyChanged}">
+                        <ContextMenu 
+                            DataContext="{Binding Path=PlacementTarget.Tag, 
+                            RelativeSource={RelativeSource Self}, 
+                            UpdateSourceTrigger=PropertyChanged}"
+                            >
                             <ContextMenu.Tag>
                                 <Binding
                                     Path="DataContext"
@@ -78,18 +82,20 @@
                             연동을 하고, 파라미터로 마우스클릭 위치를 전송하는 것입니다.-->
                             <MenuItem
                                 x:Name="AddCircle"
-                                Header="Add _Circle">
+                                Header="Add _Circle"
+                                >
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseDown">
-                                        <cmd:EventToCommand Command="{Binding CreateCircleCommand, 
-                                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-                                                            PassEventArgsToCommand="True" />  
+                                    <i:EventTrigger EventName="Click">
+                                        <cmd:EventToCommand 
+                                            Command="{Binding Path=DataContext.CreateCircleCommand, Mode=OneWay,
+                                            RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                                            PassEventArgsToCommand="True"
+                                            />  
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </MenuItem>
                             <MenuItem
-                                x:Name="Property"
-                                Header="Property"
+                                x:Name="Property" Header="Property"
                                 >
                                 <MenuItem.Command>
                                     <Binding
@@ -108,6 +114,9 @@
                             </MenuItem>
                         </ContextMenu>
                     </ListBox.ContextMenu>
+                    <!-- ListBox ContextMenu 파트 끝 -->
+                    
+                    <!-- ListBox ItemPanel 파트 시작-->
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas
@@ -117,8 +126,9 @@
                                 >
                             </Canvas>
                         </ItemsPanelTemplate>
-                        
                     </ListBox.ItemsPanel>
+                    <!-- ListBox ItemPanel 파트 끝-->
+                    
                     <ItemsControl.ItemContainerStyle>
                         <Style TargetType="{x:Type ListBoxItem}">
                             <Setter Property="FocusVisualStyle" Value="{DynamicResource MyFocusVisual}"/>
@@ -233,13 +243,16 @@
             </Border>
         </Grid>
 
+        <!-- Splitter 파트 시작 -->
         <GridSplitter
             Grid.Column="0"
             ShowsPreview="True"
             Width="2"
             Background="#FF9C9C9C"
             />
+        <!-- Splitter 파트 종료 -->
 
+        <!-- Property Window 파트 시작-->
         <Grid 
             x:Name="PropertyWindow"
             Grid.Column="1" 
@@ -248,7 +261,7 @@
             Converter={StaticResource BooleanToVisibilityConverter}}"
             >
             <ContentControl Content="{Binding PropertyExplorer}" />
-            
         </Grid>
+        <!-- Property Window 파트 종료-->
     </Grid>
 </UserControl>
