@@ -235,7 +235,8 @@
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type propertyModels:ColorPropertySet}">
-        <xctk:ColorPicker SelectedColor="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+        <xctk:ColorPicker SelectedColor="{Binding Value, UpdateSourceTrigger=PropertyChanged, 
+            Converter={StaticResource BooleanToVisibilityConverter}}" />
     </DataTemplate>
 
 </ResourceDictionary>

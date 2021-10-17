@@ -43,6 +43,84 @@ namespace PropertyExplorerTest.ViewModels
 
         private bool isPropertyCommandExecuted = false;
 
+        private double _panelX;
+        private double _panelY;
+
+        public double PanelX
+        {
+            get { return _panelX; }
+            set
+            {
+                if (value.Equals(_panelX)) return;
+                _panelX = value;
+                this.SetProperty(ref this._panelX, value, "PanelX");
+                //OnPropertyChanged("PanelX");
+            }
+        }
+
+        public double PanelY
+        {
+            get { return _panelY; }
+            set
+            {
+                if (value.Equals(_panelY)) return;
+                _panelY = value;
+                this.SetProperty(ref this._panelY, value, "PanelY");
+                //OnPropertyChanged("PanelY");
+            }
+        }
+
+        #region Create Shape Command
+        private ICommand _createLineCommand;
+
+        public ICommand CreateLineCommand
+        {
+            get 
+            { 
+                return _createLineCommand ?? (_createLineCommand = new RelayCommand<Object>(
+                execute: CreateLineCmd,
+                canExecute: CanCreateLineCmd)
+                );
+            }
+        }
+
+        public bool CanCreateLineCmd(Object arg)
+        {
+            if (SelectedShape != null)
+                return false;
+            return true;
+        }
+
+        public void CreateLineCmd(Object arg)
+        {
+            var lineModel = new LineModel(_panelX, PanelY);
+            this.Items.Add(new LineViewModel(lineModel));
+        }
+
+        private ICommand _createRectCommand;
+
+        public ICommand CreateRectCommand
+        {
+            get 
+            { 
+                return _createRectCommand ?? (_createRectCommand = new RelayCommand<Object>(
+                execute: CreateRectCmd,
+                canExecute: CanCreateRectCmd)
+                ); 
+            }
+        }
+
+        public bool CanCreateRectCmd(Object arg)
+        {
+            return true;
+        }
+
+        public void CreateRectCmd(Object arg)
+        {
+            var rectModel = new RectModel(_panelX, PanelY);
+            this.Items.Add(new RectViewModel(rectModel));
+        }
+
         private ICommand _createCircleCommand;
 
         public ICommand CreateCircleCommand
@@ -54,20 +132,19 @@ namespace PropertyExplorerTest.ViewModels
                 canExecute: CanCreateCircleCmd)
                 );
             }
-            //set { _testCommand = value; }
         }
 
         public bool CanCreateCircleCmd(Object arg)
         {
-            Debug.WriteLine($">>>>>>>>>({arg.ToString()})CanCreateCircleCmd<<<<<<<<<<<<");
             return true;
         }
 
         public void CreateCircleCmd(Object arg)
         {
-            var ellipseModel = new EllipseModel();
+            var ellipseModel = new EllipseModel(_panelX, PanelY);
             this.Items.Add(new EllipseViewModel(ellipseModel));
         }
+        #endregion
 
         /// <summary>
         /// ItemControl의 ItemSource로 활용되는 ObservableCollection 변수이다.
@@ -126,7 +203,8 @@ namespace PropertyExplorerTest.ViewModels
         /// </summary>
         public PropertyExplorerViewModel PropertyExplorer { get; set; } = new PropertyExplorerViewModel();
 
-        
+
+
         /// <summary>
         /// 생성자를 통한 초기화
         /// 사각형, 타원(원), 선을 초기에 등록한다.

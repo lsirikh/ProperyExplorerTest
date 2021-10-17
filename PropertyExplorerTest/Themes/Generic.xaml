@@ -2,11 +2,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:shapes="clr-namespace:PropertyExplorerTest.ViewModels.Shapes"
     xmlns:control="clr-namespace:PropertyExplorerTest.Controls"
     xmlns:converters="clr-namespace:PropertyExplorerTest.Converters"
     >
 
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <converters:ColorToSolidBrushConverter x:Key="BrushConverter" />
+    <converters:RotateBoxWidthConverter x:Key="RotateBoxWidthConverter" />
+    <converters:RotateBoxHeightConverter x:Key="RotateBoxHeightConverter" />
+    
     <Style TargetType="{x:Type control:DisplayPresenter}">
         
         <Setter Property="Template">
@@ -21,24 +26,52 @@
 
                             <Grid Grid.Row="0">
                                 <Label
+                                    
                                     Content="{Binding Path=Label, 
                                     RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}, 
                                     Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Visibility="{Binding Path=LabelShow, Converter={StaticResource BooleanToVisibilityConverter},
                                     RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}}"
-                                    Foreground="White"
-                                    FontSize="15"
+                                    Foreground="{Binding Path=LabelColor,
+                                    RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}}"
+                                    FontSize="{Binding Path=LabelSize, 
+                                    RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}, 
+                                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    
                                     FontWeight="Bold"
                                     />
                             </Grid>
 
                             <!-- content & panning -->
-                            <Grid Grid.Row="1">
-
-                                <ContentControl Content="{Binding Content, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}}">
-
-                                </ContentControl>
-                                <!--<control:MoveThumb
+                            <Grid Grid.Row="1" 
+                                  x:Name="ShapeGrid" 
+                                  HorizontalAlignment="Center" 
+                                  VerticalAlignment="Center" 
+                                  >
+                            
+                            <Grid.Height >
+                                <MultiBinding Converter="{StaticResource RotateBoxHeightConverter}">
+                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                    <Binding Path="ShapeWidth" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                    <Binding Path="ShapeHeight" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                </MultiBinding>
+                            </Grid.Height>
+                            <Grid.Width >
+                                <MultiBinding Converter="{StaticResource RotateBoxWidthConverter}">
+                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                    <Binding Path="ShapeWidth" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                    <Binding Path="ShapeHeight" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                </MultiBinding>
+                            </Grid.Width>
+                                
+                            <ContentControl Content="{Binding Content, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}}"/>
+                            <!--<control:MoveThumb
                                     x:Name="PART_PanningThumb"
                                     Background="Transparent"
                                     >

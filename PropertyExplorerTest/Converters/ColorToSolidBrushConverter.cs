@@ -23,7 +23,10 @@ namespace PropertyExplorerTest.Converters
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var color = (Color)value;
+            string colorcode = (string)value;
+
+            Color color = (Color)ColorConverter.ConvertFromString(colorcode);
+
             return new SolidColorBrush(color);
         }
 
@@ -32,5 +35,7 @@ namespace PropertyExplorerTest.Converters
             var brush = value as SolidColorBrush;
             return brush?.Color;
         }
+
+        
     }
 }

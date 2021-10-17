@@ -66,11 +66,20 @@ namespace PropertyExplorerTest.Models.PropertyModels
 	/// <summary>
 	/// 이하 상동
 	/// </summary>
-	public class ColorPropertySet : PropertySet<Color>
+	/*public class ColorPropertySet : PropertySet<Color>
 	{
 		public ColorPropertySet(string name) : base(name) { }
 
 		public ColorPropertySet(string name, Func<Color> getter, Action<Color> setter)
+			: base(name, getter, setter)
+		{
+		}
+	}*/
+	public class ColorPropertySet : PropertySet<string>
+	{
+		public ColorPropertySet(string name) : base(name) { }
+
+		public ColorPropertySet(string name, Func<string> getter, Action<string> setter)
 			: base(name, getter, setter)
 		{
 		}

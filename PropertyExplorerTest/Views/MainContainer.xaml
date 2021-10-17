@@ -7,10 +7,12 @@
     xmlns:behaviors="clr-namespace:PropertyExplorerTest.Behaviors"
     xmlns:viewModels="clr-namespace:PropertyExplorerTest.ViewModels"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:ie="http://schemas.microsoft.com/expression/2010/interactions" 
     xmlns:cmd="http://www.galasoft.ch/mvvmlight"
     mc:Ignorable="d"
     d:DesignHeight="850"
     d:DesignWidth="1200"
+    x:Name="TopLevel"
     >
 
     <UserControl.Resources>
@@ -95,6 +97,34 @@
                                 </i:Interaction.Triggers>
                             </MenuItem>
                             <MenuItem
+                                x:Name="AddRectangle"
+                                Header="Add _Rectangle"
+                                >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <cmd:EventToCommand 
+                                            Command="{Binding Path=DataContext.CreateRectCommand, Mode=OneWay,
+                                            RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                                            PassEventArgsToCommand="True"
+                                            />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </MenuItem>
+                            <MenuItem
+                                x:Name="AddLine"
+                                Header="Add _Line"
+                                >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <cmd:EventToCommand 
+                                            Command="{Binding Path=DataContext.CreateLineCommand, Mode=OneWay,
+                                            RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"
+                                            PassEventArgsToCommand="True"
+                                            />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </MenuItem>
+                            <MenuItem
                                 x:Name="Property" Header="Property"
                                 >
                                 <MenuItem.Command>
@@ -124,6 +154,12 @@
                                 SnapsToDevicePixels="True"
                                 Margin="5" 
                                 >
+                                <i:Interaction.Behaviors>
+                                    <behaviors:MouseBehavior 
+                                        MouseX="{Binding PanelX, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                        MouseY="{Binding PanelY, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                        />
+                                </i:Interaction.Behaviors>
                             </Canvas>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
@@ -135,11 +171,12 @@
                             <Setter Property="Canvas.Left" Value="{Binding X.Value}" />
                             <Setter Property="Canvas.Top" Value="{Binding Y.Value}" />
                             <Setter Property="Panel.ZIndex" Value="{Binding ZLevel.Value}" />
-                            <Setter Property="behaviors:InCanvasMovingBehavior.PanningTarget" Value="{Binding RelativeSource={RelativeSource Self}}" />
+                            <Setter Property="behaviors:InCanvasMovingBehavior.PanningTarget" Value="{Binding RelativeSource={RelativeSource Self}, UpdateSourceTrigger=PropertyChanged}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.X" Value="{Binding X.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.Y" Value="{Binding Y.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.ZLevel" Value="{Binding ZLevel.Value}" />
                             <Setter Property="behaviors:InCanvasMovingBehavior.Captured" Value="{Binding IsSelected, RelativeSource={RelativeSource Self}}" />
+                            
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
@@ -224,7 +261,7 @@
                                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
                                                                 Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                                                 <EasingColorKeyFrame KeyTime="0"
-                                                                Value="{StaticResource SelectedUnfocusedColor}" />
+                                                                Value="{StaticResource SelectedItemColor}" />
                                                             </ColorAnimationUsingKeyFrames>
                                                         </Storyboard>
                                                     </VisualState>

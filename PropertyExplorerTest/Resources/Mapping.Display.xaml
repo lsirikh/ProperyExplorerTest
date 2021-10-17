@@ -19,26 +19,88 @@
 
     <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <converters:ColorToSolidBrushConverter x:Key="BrushConverter" />
+    <converters:SizeToHalfConverter x:Key="MidPointConverter" />
+    <converters:RotateBoxWidthMidConverter x:Key="WidthMidConverter" />
+    <converters:RotateBoxHeightMidConverter x:Key="HeightMidConverter" />
 
     <!--Content에 해당하는 영역 in Generic-->
     <DataTemplate DataType="{x:Type shapes:RectViewModel}">
         <control:DisplayPresenter
             X="{Binding X.Value}"
             Y="{Binding Y.Value}"
+            
             Label="{Binding Name.Value}"
-            LocationShow="{Binding IsLocationShow.Value}"
+            LabelSize="{Binding NameSize.Value}"
+            LabelColor="{Binding NameColor.Value}"
             LabelShow="{Binding IsNameShow.Value}"
+            
+            BodyLabel="{Binding Body.Value}"
+            BodyLabelSize="{Binding BodySize.Value}"
+            BodyLabelColor="{Binding BodyColor.Value}"
+            BodyLabelShow="{Binding IsBodyShow.Value}"
+            
+            LocationShow="{Binding IsLocationShow.Value}"
+            
+            ShapeWidth="{Binding Width.Value}"
+            ShapeHeight="{Binding Height.Value}"
+            ShapeAngle="{Binding ShapeAngle.Value}"
             >
-            <Rectangle
-                Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
-                Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
-                StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                RadiusX="{Binding Path=RadiusX.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                RadiusY="{Binding Path=RadiusY.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                />
+            <Grid 
+                Width="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
+                Height="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" 
+                >
+                
+                <Rectangle 
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                    Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                    StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    RadiusX="{Binding Path=RadiusX.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    RadiusY="{Binding Path=RadiusY.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    >
+                    <Rectangle.RenderTransform>
+                        <RotateTransform 
+                            CenterX="{Binding Path=Width.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            CenterY="{Binding Path=Height.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
+                            >
+                            <!--<RotateTransform.CenterX>
+                                <MultiBinding Converter="{StaticResource WidthMidConverter}">
+                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="Default" 
+                                             />
+                                    <Binding Path="Width" Mode="OneWay" UpdateSourceTrigger="Default" 
+                                             />
+                                    <Binding Path="Height" Mode="OneWay" UpdateSourceTrigger="Default" 
+                                             />
+                                </MultiBinding>
+                            </RotateTransform.CenterX>
+                            <RotateTransform.CenterY>
+                                <MultiBinding Converter="{StaticResource HeightMidConverter}">
+                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="Default" 
+                                             />
+                                    <Binding Path="Width" Mode="OneWay" UpdateSourceTrigger="Default" 
+                                             />
+                                    <Binding Path="Height" Mode="OneWay" UpdateSourceTrigger="Default" 
+                                             />
+                                </MultiBinding>
+                            </RotateTransform.CenterY>-->
+                        </RotateTransform>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <TextBlock 
+                    Text="{Binding Path=Body.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    FontSize="{Binding Path=BodySize.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Foreground="{Binding Path=BodyColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}" 
+                    Visibility="{Binding Path=IsBodyShow.Value, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    />
+            </Grid>
         </control:DisplayPresenter>
     </DataTemplate>
 
@@ -46,20 +108,58 @@
         <control:DisplayPresenter
             X="{Binding X.Value}"
             Y="{Binding Y.Value}"
+            
             Label="{Binding Name.Value}"
-            LocationShow="{Binding IsLocationShow.Value}"
+            LabelSize="{Binding NameSize.Value}"
+            LabelColor="{Binding NameColor.Value}"
             LabelShow="{Binding IsNameShow.Value}"
+            
+            BodyLabel="{Binding Body.Value}"
+            BodyLabelSize="{Binding BodySize.Value}"
+            BodyLabelColor="{Binding BodyColor.Value}"
+            BodyLabelShow="{Binding IsBodyShow.Value}"
+            
+            LocationShow="{Binding IsLocationShow.Value}"
+            
+            ShapeWidth="{Binding Width.Value}"
+            ShapeHeight="{Binding Height.Value}"
+            ShapeAngle="{Binding ShapeAngle.Value}"
             >
-            <Ellipse
-                Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
-                Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
-                StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <Grid
+                Width="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
+                Height="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" 
                 >
-
-            </Ellipse>
+                
+                <Ellipse
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                    Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                    StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    >
+                    <Ellipse.RenderTransform>
+                        <RotateTransform 
+                            CenterX="{Binding Path=Width.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            CenterY="{Binding Path=Height.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
+                            >
+                            
+                        </RotateTransform>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <TextBlock 
+                    Text="{Binding Path=Body.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    FontSize="{Binding Path=BodySize.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Foreground="{Binding Path=BodyColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}" 
+                    Visibility="{Binding Path=IsBodyShow.Value, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    />
+            </Grid>
         </control:DisplayPresenter>
     </DataTemplate>
 
@@ -67,22 +167,61 @@
         <control:DisplayPresenter
             X="{Binding X.Value}"
             Y="{Binding Y.Value}"
+            
             Label="{Binding Name.Value}"
-            LocationShow="{Binding IsLocationShow.Value}"
+            LabelSize="{Binding NameSize.Value}"
+            LabelColor="{Binding NameColor.Value}"
             LabelShow="{Binding IsNameShow.Value}"
+            
+            BodyLabel="{Binding Body.Value}"
+            BodyLabelSize="{Binding BodySize.Value}"
+            BodyLabelColor="{Binding BodyColor.Value}"
+            BodyLabelShow="{Binding IsBodyShow.Value}"
+            
+            LocationShow="{Binding IsLocationShow.Value}"
+            ShapeWidth="{Binding Width.Value}"
+            ShapeHeight="{Binding Height.Value}"
+            ShapeAngle="{Binding ShapeAngle.Value}"
             >
-            <Line
-                Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
-                Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
-                StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                X1="{Binding Path=X1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                X2="{Binding Path=X2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Y1="{Binding Path=Y1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Y2="{Binding Path=Y2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                />
+            <Grid
+                Width="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
+                Height="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" 
+                >
+                
+                <Line
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Height="{Binding Path=Height.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Fill="{Binding Path=FillColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                    Stroke="{Binding Path=BorderColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}"
+                    StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    X1="{Binding Path=X1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    X2="{Binding Path=X2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Y1="{Binding Path=Y1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Y2="{Binding Path=Y2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    >
+                    <Line.RenderTransform>
+                        <RotateTransform 
+                            CenterX="{Binding Path=Width.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            CenterY="{Binding Path=Height.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
+                            >
+                            
+                        </RotateTransform>
+                    </Line.RenderTransform>
+                </Line>
+                <TextBlock 
+                    Text="{Binding Path=Body.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    FontSize="{Binding Path=BodySize.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Foreground="{Binding Path=BodyColor.Value, Converter={StaticResource BrushConverter}, Mode=TwoWay}" 
+                    Visibility="{Binding Path=IsBodyShow.Value, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    />
+            </Grid>
         </control:DisplayPresenter>
     </DataTemplate>
 
