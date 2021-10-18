@@ -22,6 +22,8 @@
     <converters:SizeToHalfConverter x:Key="MidPointConverter" />
     <converters:RotateBoxWidthMidConverter x:Key="WidthMidConverter" />
     <converters:RotateBoxHeightMidConverter x:Key="HeightMidConverter" />
+    <converters:RotateBoxWidthConverter x:Key="RotateBoxWidthConverter" />
+    <converters:RotateBoxHeightConverter x:Key="RotateBoxHeightConverter" />
 
     <!--Content에 해당하는 영역 in Generic-->
     <DataTemplate DataType="{x:Type shapes:RectViewModel}">
@@ -45,12 +47,7 @@
             ShapeHeight="{Binding Height.Value}"
             ShapeAngle="{Binding ShapeAngle.Value}"
             >
-            <Grid 
-                Width="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, 
-                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
-                Height="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged, 
-                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" 
-                >
+            <Grid>
                 
                 <Rectangle 
                     HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -63,34 +60,19 @@
                     RadiusX="{Binding Path=RadiusX.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     RadiusY="{Binding Path=RadiusY.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     >
+                    <Rectangle.LayoutTransform>
+                        <RotateTransform Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Rectangle.LayoutTransform>
+                    <!--
                     <Rectangle.RenderTransform>
                         <RotateTransform 
                             CenterX="{Binding Path=Width.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             CenterY="{Binding Path=Height.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                             Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"                            
                             >
-                            <!--<RotateTransform.CenterX>
-                                <MultiBinding Converter="{StaticResource WidthMidConverter}">
-                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="Default" 
-                                             />
-                                    <Binding Path="Width" Mode="OneWay" UpdateSourceTrigger="Default" 
-                                             />
-                                    <Binding Path="Height" Mode="OneWay" UpdateSourceTrigger="Default" 
-                                             />
-                                </MultiBinding>
-                            </RotateTransform.CenterX>
-                            <RotateTransform.CenterY>
-                                <MultiBinding Converter="{StaticResource HeightMidConverter}">
-                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="Default" 
-                                             />
-                                    <Binding Path="Width" Mode="OneWay" UpdateSourceTrigger="Default" 
-                                             />
-                                    <Binding Path="Height" Mode="OneWay" UpdateSourceTrigger="Default" 
-                                             />
-                                </MultiBinding>
-                            </RotateTransform.CenterY>-->
                         </RotateTransform>
                     </Rectangle.RenderTransform>
+                    -->
                 </Rectangle>
                 <TextBlock 
                     Text="{Binding Path=Body.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -125,13 +107,16 @@
             ShapeHeight="{Binding Height.Value}"
             ShapeAngle="{Binding ShapeAngle.Value}"
             >
+            <!--
             <Grid
-                Width="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, 
-                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
-                Height="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged, 
-                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" 
-                >
+                Width="{Binding (Grid.Width), UpdateSourceTrigger=PropertyChanged
+                ,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
                 
+                    Height="{Binding (Grid.Height), UpdateSourceTrigger=PropertyChanged
+                ,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
+            >
+            -->
+            <Grid>
                 <Ellipse
                     HorizontalAlignment="Center" VerticalAlignment="Center"
                     Width="{Binding Path=Width.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -141,6 +126,12 @@
                     StrokeThickness="{Binding Path=BorderThickness.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     ToolTip="{Binding Path=ToolTip.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     >
+                    <!-- Shape의 Rotate는 RenderTransform이 아니라 LayoutTransform을 해야지 -->
+                    <!-- VisualTree의 상속관계를 정리해주면서 작동한다. -->
+                    <Ellipse.LayoutTransform>
+                        <RotateTransform Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Ellipse.LayoutTransform>
+                    <!--
                     <Ellipse.RenderTransform>
                         <RotateTransform 
                             CenterX="{Binding Path=Width.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -150,6 +141,7 @@
                             
                         </RotateTransform>
                     </Ellipse.RenderTransform>
+                    -->
                 </Ellipse>
                 <TextBlock 
                     Text="{Binding Path=Body.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -183,12 +175,16 @@
             ShapeHeight="{Binding Height.Value}"
             ShapeAngle="{Binding ShapeAngle.Value}"
             >
+            <!--
             <Grid
-                Width="{Binding Path=Width, UpdateSourceTrigger=PropertyChanged, 
-                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}"
-                Height="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged, 
-                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}}" 
-                >
+                Width="{Binding (Grid.Width), UpdateSourceTrigger=PropertyChanged
+                ,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
+                
+                    Height="{Binding (Grid.Height), UpdateSourceTrigger=PropertyChanged
+                ,RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}}"
+            >
+            -->
+            <Grid>
                 
                 <Line
                     HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -203,6 +199,10 @@
                     Y1="{Binding Path=Y1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Y2="{Binding Path=Y2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     >
+                    <Line.LayoutTransform>
+                        <RotateTransform Angle="{Binding Path=ShapeAngle.Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Line.LayoutTransform>
+                    <!--
                     <Line.RenderTransform>
                         <RotateTransform 
                             CenterX="{Binding Path=Width.Value, Converter={StaticResource MidPointConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -212,6 +212,7 @@
                             
                         </RotateTransform>
                     </Line.RenderTransform>
+                    -->
                 </Line>
                 <TextBlock 
                     Text="{Binding Path=Body.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
