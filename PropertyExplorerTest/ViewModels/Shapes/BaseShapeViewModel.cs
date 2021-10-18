@@ -28,6 +28,20 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
         public IPropertySet Name { get; }
 
+        public IPropertySet NameSize { get; }
+
+        public IPropertySet NameColor { get; }
+
+        public IPropertySet IsNameShow { get; }
+
+        public IPropertySet Body { get; }
+
+        public IPropertySet BodySize { get; }
+
+        public IPropertySet BodyColor { get; }
+
+        public IPropertySet IsBodyShow { get; }
+
         public IPropertySet Group { get; }
 
         public IPropertySet ZLevel { get; }
@@ -36,9 +50,13 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
         public IPropertySet Height { get; }
 
+        public IPropertySet ShapeAngle { get; }
+
         public IPropertySet X { get; set; }
 
         public IPropertySet Y { get; set; }
+
+        public IPropertySet IsLocationShow { get; set; }
 
         public IPropertySet FillColor { get; }
 
@@ -66,22 +84,40 @@ namespace PropertyExplorerTest.ViewModels.Shapes
             this._model = model;
 
             //왜 이렇게 처리하는지 이해가 안됨.
-            this.Id = new IntPropertySet(nameof(this.Id), () => model.Id, i => model.Id = i);
+            this.Id = new IntPropertySet(nameof(this.Id), () => model.Id, id => model.Id = id);
+            
+            this.Name = new StringPropertySet(nameof(this.Name), () => model.Name, name => model.Name = name);
 
-            this.Name = new StringPropertySet(nameof(this.Name), () => model.Name, n => model.Name = n);
+            this.NameColor = new ColorPropertySet(nameof(this.NameColor), () => model.NameColor, nameColor => model.NameColor = nameColor);
 
-            this.Group = new IntPropertySet(nameof(this.Group), () => model.Group, g => model.Group = g);
+            this.NameSize = new IntPropertySet(nameof(this.NameSize), () => model.NameSize, size => model.NameSize = size);
 
-            this.ZLevel = new IntPropertySet(nameof(this.ZLevel), () => model.ZLevel, l => model.ZLevel = l);
+            this.IsNameShow = new BoolPropertySet(nameof(this.IsNameShow), () => model.IsNameShow, showName => model.IsNameShow = showName);
 
-            this.Width = new DoublePropertySet(nameof(this.Width), ()=> model.Width, w => model.Width = w) ;
-            this.Height = new DoublePropertySet(nameof(this.Height), () => model.Height, h => model.Height = h);
+            this.Body = new StringPropertySet(nameof(this.Body), () => model.Body, body => model.Body = body);
+
+            this.BodyColor = new ColorPropertySet(nameof(this.BodyColor), () => model.BodyColor, bodyColor => model.BodyColor = bodyColor);
+
+            this.BodySize = new IntPropertySet(nameof(this.BodySize), () => model.BodySize, size => model.BodySize = size);
+
+            this.IsBodyShow = new BoolPropertySet(nameof(this.IsBodyShow), () => model.IsBodyShow, showBody => model.IsBodyShow = showBody);
+
+
+            this.Group = new IntPropertySet(nameof(this.Group), () => model.Group, group => model.Group = group);
+
+            this.Width = new DoublePropertySet(nameof(this.Width), ()=> model.Width, width => model.Width = width) ;
+            this.Height = new DoublePropertySet(nameof(this.Height), () => model.Height, height => model.Height = height);
+            this.ShapeAngle = new DoublePropertySet(nameof(this.ShapeAngle), () => model.ShapeAngle, shapeAngle => model.ShapeAngle = shapeAngle);
+
             this.X = new DoublePropertySet(nameof(this.X), () => model.X, x => model.X = x);
             this.Y = new DoublePropertySet(nameof(this.Y), () => model.Y, y => model.Y = y);
-            this.FillColor = new ColorPropertySet(nameof(this.FillColor), () => model.FillColor, f => model.FillColor = f);
+            this.ZLevel = new IntPropertySet(nameof(this.ZLevel), () => model.ZLevel, level => model.ZLevel = level);
+            this.IsLocationShow = new BoolPropertySet(nameof(this.IsLocationShow), ()=> model.isLocationShow, location => model.isLocationShow = location);
+
+            this.FillColor = new ColorPropertySet(nameof(this.FillColor), () => model.FillColor, fill => model.FillColor = fill);
             this.BorderColor = new ColorPropertySet(nameof(this.BorderColor), () => model.BorderColor, bc => model.BorderColor = bc);
             this.BorderThickness = new DoublePropertySet(nameof(this.BorderThickness), () => model.BorderThickness, bt => model.BorderThickness = bt);
-            this.ToolTip = new StringPropertySet(nameof(this.ToolTip), () => model.ToolTip, t => model.ToolTip = t);
+            this.ToolTip = new StringPropertySet(nameof(this.ToolTip), () => model.ToolTip, tip => model.ToolTip = tip);
 
             this.InitBaseCategories();
         }
@@ -95,18 +131,30 @@ namespace PropertyExplorerTest.ViewModels.Shapes
 
             var data = new PropertyCategory("Data");
             data.Properties.Add(new PropertyContainer(this.Id, data));
-            data.Properties.Add(new PropertyContainer(this.Name, data));
             data.Properties.Add(new PropertyContainer(this.Group, data));
             this._categories.Add(data);
+
+            var content = new PropertyCategory("Content");
+            data.Properties.Add(new PropertyContainer(this.Name, content));
+            data.Properties.Add(new PropertyContainer(this.NameSize, content));
+            data.Properties.Add(new PropertyContainer(this.NameColor, content));
+            data.Properties.Add(new PropertyContainer(this.IsNameShow, content));
+            data.Properties.Add(new PropertyContainer(this.Body, content));
+            data.Properties.Add(new PropertyContainer(this.BodySize, content));
+            data.Properties.Add(new PropertyContainer(this.BodyColor, content));
+            data.Properties.Add(new PropertyContainer(this.IsBodyShow, content));
+            this._categories.Add(content);
 
             var size = new PropertyCategory("Size");
             size.Properties.Add(new PropertyContainer(this.Width, size));
             size.Properties.Add(new PropertyContainer(this.Height, size));
+            size.Properties.Add(new PropertyContainer(this.ShapeAngle, size));
             this._categories.Add(size);
 
             var location = new PropertyCategory("Location");
             location.Properties.Add(new PropertyContainer(this.X, location));
             location.Properties.Add(new PropertyContainer(this.Y, location));
+            location.Properties.Add(new PropertyContainer(this.IsLocationShow, location));
             size.Properties.Add(new PropertyContainer(this.ZLevel, location));
             this._categories.Add(location);
 

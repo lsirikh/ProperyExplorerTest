@@ -256,6 +256,28 @@ namespace PropertyExplorerTest.Behaviors
 
 
 
+        public static double GetPanelX(DependencyObject obj)
+        {
+            return (double)obj.GetValue(PanelXProperty);
+        }
+
+        public static void SetPanelX(DependencyObject obj, double value)
+        {
+            obj.SetValue(PanelXProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for PanelX.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PanelXProperty =
+            DependencyProperty.RegisterAttached(
+                
+            name: "PanelX",
+            propertyType: typeof(double),
+            ownerType: typeof(InCanvasMovingBehavior),
+            defaultMetadata: new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, null)
+            );
+
+
+
         #endregion
 
         /// <summary>
@@ -282,7 +304,7 @@ namespace PropertyExplorerTest.Behaviors
         {
 
 
-            private bool _isCaptured;
+            //private bool _isCaptured;
 
             private bool _isZTop = false;
 
@@ -334,6 +356,7 @@ namespace PropertyExplorerTest.Behaviors
             private void CanvasMouseButtonDown(object sender, RoutedEventArgs e)
             {
                 _isOnCavasClicked = true;
+                //Debug.WriteLine("InCanvasMovingBehavior CanvasMouseButtonDown");
             }
 
             private void CanvasMouseButtonUp(object sender, RoutedEventArgs e)
@@ -344,7 +367,7 @@ namespace PropertyExplorerTest.Behaviors
                     sv.UnselectAll();
                     _selectedList.Clear();
                     _refPoint = new Point();
-                    Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
+                    //Debug.WriteLine($"SelectedList : {_selectedList.Count} ea");
                     _isOnCavasClicked = false;
                 }
                 
@@ -397,7 +420,6 @@ namespace PropertyExplorerTest.Behaviors
                 //만들어야 한다.
 
                 ElementControl elementControl = new ElementControl(element);
-                bool isRemoved = false;
                 
                 foreach (var item in _selectedList)
                 {

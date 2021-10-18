@@ -19,6 +19,28 @@ namespace PropertyExplorerTest.Models
         /// </summary>
         public string Name { get; set; } = "Untitled";
 
+        public int NameSize { get; set; } = 10;
+
+        public string NameColor { get; set; } = Color.FromRgb(0x00, 0x00, 0x00).ToString();
+
+        /// <summary>
+        /// 제목 숨김/표지용
+        /// </summary>
+        public bool IsNameShow { get; set; } = false;
+
+
+        public string Body { get; set; } = "0";
+
+        public int BodySize { get; set; } = 10;
+
+        public string BodyColor { get; set; } = Color.FromRgb(0x00, 0x00, 0x00).ToString();
+
+        /// <summary>
+        /// 제목 숨김/표지용
+        /// </summary>
+        public bool IsBodyShow { get; set; } = false;
+
+
         /// <summary>
         /// 맵아이디
         /// </summary>
@@ -45,6 +67,11 @@ namespace PropertyExplorerTest.Models
         public double Height { get; set; } = 100;
 
         /// <summary>
+        /// Shape Angle는 도형, 선, 그림 등 이미지만 해당
+        /// </summary>
+        public double ShapeAngle { get; set; } = 0;
+
+        /// <summary>
         /// 좌표정보 X
         /// Canvas에 붙일 때 사용된다.
         /// </summary>
@@ -57,14 +84,21 @@ namespace PropertyExplorerTest.Models
         public double Y { get; set; }
 
         /// <summary>
+        /// 위치 정보 숨김/표시 용
+        /// </summary>
+        public bool isLocationShow { get; set; } = false;
+
+        /// <summary>
         /// FillColor 도형 내부의 컬러
         /// </summary>
-        public Color FillColor { get; set; } = Color.FromRgb(0xff, 0x00, 0x00);
+        //public Color FillColor { get; set; } = Color.FromRgb(0xff, 0x00, 0x00);
+        public string FillColor { get; set; } = Color.FromRgb(0xff, 0x00, 0x00).ToString();
 
         /// <summary>
         /// 도형 선의 색깔
         /// </summary>
-        public Color BorderColor { get; set; } = Color.FromRgb(0x24, 0x00, 0xff);
+        //public Color BorderColor { get; set; } = Color.FromRgb(0x24, 0x00, 0xff);
+        public string BorderColor { get; set; } = Color.FromRgb(0x24, 0x00, 0xff).ToString();
 
         /// <summary>
         /// 도형 선의 두께

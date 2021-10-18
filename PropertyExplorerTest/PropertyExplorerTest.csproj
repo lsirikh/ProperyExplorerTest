@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,11 +57,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\MouseBehavior.cs" />
     <Compile Include="Controls\InCanvasMovingBehavior.cs" />
     <Compile Include="Controls\DisplayPresenter.cs" />
     <Compile Include="Controls\MoveThumb.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToSolidBrushConverter.cs" />
+    <Compile Include="Converters\RotateBoxHeightConverter.cs" />
+    <Compile Include="Converters\RotateBoxHeightMidConverter.cs" />
+    <Compile Include="Converters\RotateBoxWidthConverter.cs" />
+    <Compile Include="Converters\RotateBoxWidthMidConverter.cs" />
+    <Compile Include="Converters\SizeToHalfConverter.cs" />
     <Compile Include="Defines\BaseNotifier.cs" />
     <Compile Include="Defines\Interfaces\IPropertyCategory.cs" />
     <Compile Include="Defines\Interfaces\IPropertyContainer.cs" />
@@ -75,7 +82,7 @@
     <Compile Include="Models\PropertyModels\PropertySetExtension.cs" />
     <Compile Include="Models\PropertyModels\PropertySets.cs" />
     <Compile Include="Models\RectModel.cs" />
-    <Compile Include="ViewModels\Commands\SelectItemCommand.cs" />
+    <Compile Include="Services\RotationMath.cs" />
     <Compile Include="ViewModels\Shapes\BaseShapeViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\Shapes\EllipseViewModel.cs" />
@@ -172,8 +179,6 @@
       <Version>2.0.20525</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Behaviors\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
