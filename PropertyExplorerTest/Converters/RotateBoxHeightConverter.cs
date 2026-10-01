@@ -1,4 +1,5 @@
-﻿using PropertyExplorerTest.Services;
+﻿using PropertyExplorerTest.Models.PropertyModels;
+using PropertyExplorerTest.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,9 +23,13 @@ namespace PropertyExplorerTest.Converters
 
             foreach (var item in values)
             {
-                if (item.GetType() != typeof(double))
+                if (item.GetType() == typeof(double))
                 {
                     //throw new ArgumentException("RotateBoxConverter can only be used to convert double."); // developer error
+                }
+                else if (item.GetType() == typeof(DoublePropertySet))
+                {
+
                 }
                 else
                 {
@@ -33,6 +38,8 @@ namespace PropertyExplorerTest.Converters
             }
 
             return RotationMath.GetHeight((double)values[0], (double)values[1], (double)values[2]);
+            //return RotationMath.GetHeight(((DoublePropertySet)values[0]).Value, ((DoublePropertySet)values[0]).Value, ((DoublePropertySet)values[0]).Value);
+
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -20,7 +20,7 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition />
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
@@ -49,26 +49,29 @@
                                   VerticalAlignment="Center" 
                                   >
                             
-                            <Grid.Height >
-                                <MultiBinding Converter="{StaticResource RotateBoxHeightConverter}">
-                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
-                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
-                                    <Binding Path="ShapeWidth" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
-                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
-                                    <Binding Path="ShapeHeight" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
-                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
-                                </MultiBinding>
-                            </Grid.Height>
-                            <Grid.Width >
-                                <MultiBinding Converter="{StaticResource RotateBoxWidthConverter}">
-                                    <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
-                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
-                                    <Binding Path="ShapeWidth" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
-                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
-                                    <Binding Path="ShapeHeight" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
-                                             RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
-                                </MultiBinding>
-                            </Grid.Width>
+                               
+                                <!--
+                                <Grid.Height >
+                                    <MultiBinding Converter="{StaticResource RotateBoxHeightConverter}">
+                                        <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                        <Binding Path="ShapeWidth" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                        <Binding Path="ShapeHeight" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                    </MultiBinding>
+                                </Grid.Height>
+                                <Grid.Width >
+                                    <MultiBinding Converter="{StaticResource RotateBoxWidthConverter}">
+                                        <Binding Path="ShapeAngle" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                        <Binding Path="ShapeWidth" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                        <Binding Path="ShapeHeight" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" 
+                                                 RelativeSource="{RelativeSource AncestorType={x:Type control:DisplayPresenter}}"/>
+                                    </MultiBinding>
+                                </Grid.Width>
+                                -->
                                 
                             <ContentControl Content="{Binding Content, RelativeSource={RelativeSource AncestorType={x:Type control:DisplayPresenter}}}"/>
                             <!--<control:MoveThumb
